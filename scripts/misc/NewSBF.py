@@ -1,8 +1,8 @@
 from astropy.io import ascii
 from astropy.table import join,vstack, Table
 import numpy as np
-t1 = ascii.read('../data/calibrators/calibrators_sbf_new.csv')
-t2 = ascii.read('../data/CSPI+II_max/B_max_SBF.csv')
+t1 = ascii.read('../../data/calibrators/calibrators_sbf_new.csv')
+t2 = ascii.read('../../data/lc/B_max_SBF.csv')
 
 t2.remove_column('dist')
 t2.remove_column('edist')
@@ -45,10 +45,10 @@ table['covBV_M']=t['covBV_M']
 table['ml']=t['ml']
 table['m']=t['m']
 table['mu']=t['mu']
-table['host']=t1['host']
+table['host']=t['host']
 table['dist']=t['dist']
 table['edist']=t['edist']
 table['caltype']='s'
 
 print (table)
-table.write('../data/calibrators/calibrators_sbf_final.csv', format='ascii.csv', delimiter=',',overwrite=True)
+table.write('../../data/calibrators/calibrators_sbf_final.csv', format='ascii.csv', delimiter=',',overwrite=True)
