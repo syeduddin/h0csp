@@ -4,6 +4,7 @@ from astropy.io import ascii
 from astropy.table import Table,join
 import sys,os
 from numpy import *
+from collections import Counter
 
 tab = ascii.read('st_fits_CSPI+II+Ceph+TRGB_gen3.dat')
 tab2 = ascii.read('Spreadsheet.csv')
@@ -17,6 +18,12 @@ tab2['phys'] = where(tab2['Physics?'] == 'Yes', 1, 0)
 tab2.remove_column('Cosmology?')
 tab2.remove_column('Physics?')
 tab = join(tab, tab2, join_type='left', keys='name')
+
+print (Counter(tab2['subtype']))
+print(len(tab2['name']))
+w =where(tab2['subtype']=='Ia-02cx')
+print(tab2['name'][w])
+sys.exit()
 
 Btab = tab[tab['f'] == 'B']['name','Mmax','eMmax']
 Btab.rename_column('Mmax','B')

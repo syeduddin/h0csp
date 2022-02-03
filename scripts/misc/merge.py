@@ -5,13 +5,14 @@ import numpy as np
 
 
 filter = sys.argv[1]
-tab1 = ascii.read('../data/CSPI+II_max/'+filter+'_max.csv')
+tab1 = ascii.read('../../data/lc/'+filter+'_max.csv')
+
 
 
 tab1.rename_column('name','sn')      # for consistency
 tab1.remove_column('dist')           # avoid collision
-tab2 = ascii.read('../data/CSPHostMass.csv')
-tab3 = ascii.read('../data/calibrators/calibrators_trgb.csv')
+tab2 = ascii.read('../../data/hosts/CSPHostMass.csv')
+tab3 = ascii.read('../../data/calibrators/calibrators_sbf_final.csv')
 
 # tab3 has no 'sn1' so just copy 'sn'
 tab3['sn1'] = tab3['sn']
@@ -42,7 +43,10 @@ bigt = vstack([t1,t2])
 newt1 = unique(bigt, keys='sn')
 
 #newt2 = unique(bigt[w], keys='sn')
+w = np.where(newt1['dist']>1)
+print (len(newt1['dist'][w]))
+sys.exit()
 
 
-newt1.write('../data/working/'+filter+'_trgb.csv', format='ascii.csv', delimiter=',',overwrite=True)
+newt1.write('../../data/working/'+filter+'_sbf.csv', format='ascii.csv', delimiter=',',overwrite=True)
 #newt.write('test.csv', format='ascii.csv', delimiter=' ')

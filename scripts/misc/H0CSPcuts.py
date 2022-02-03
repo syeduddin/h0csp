@@ -32,23 +32,39 @@ emmax = tab['eMmax']
 bv = tab['BV']
 ebv = tab['eBV']
 m_csp = tab['m']
+eml = (tab['m']-tab['ml'])
+emu = (tab['mu']-tab['m'])
+em = (emu+eml)/2.
 dist = tab['dist']
 edist = tab['edist']
 c_ms = tab['covMs']
 c_mbv = tab['covBV_M']
 
 
-#w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')& (tab['zcmb']>0.01) & (tab['dist']<0)& (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5))
-
-w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['dist']<0) & (tab['zcmb']>0.02) & (tab['zcmb']<0.075))
 
 
-f1 =open('../results/'+file[:-4]+'_result_zlim.txt','w')
+w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')& (tab['zcmb']>0.01) & (tab['dist']<0) & (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5))
 
-w1 = (tab['dist']>0)
+
+#w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['t0']<5)) 
+
+
+f1 =open('../results/'+file[:-4]+'_results_cut.txt','w')
+
+w1 = (dist>0)
+
 
 print (file, len(st[w0]),len(st[w1]))
-#sys.exit()
+
+#mmax[w0] = (mmax[w0]*1.0)+.02
+#st[w0] = (st[w0]*1.0)-0.01
+#bv[w0] = (bv[w0]*1.0)-0.03
+
+#mmax[w1] = (mmax[w1]*1.)+.007
+#st[w1] = (st[w1]*1.0)+0.02
+#bv[w1] = (bv[w1]*1.0)
+
+
 #initial guess
 plim=-19.3, -19.2
 p1lim =-1.2,-1.1
@@ -79,13 +95,13 @@ def like(par):
 
         
         mu_sn = mmax[w0] - p - p1*(st[w0] - 1.) -  p2*(st[w0] - 1.)**2 - rv*bv[w0] - alpha*(m_csp[w0]-np.median(m_csp[w0]))
+
         mu_cal = mmax[w1] - p - p1*(st[w1] - 1.) -  p2*(st[w1] - 1.)**2 - rv*bv[w1] - alpha*(m_csp[w1]-np.median(m_csp[w1]))
 
         for mu_sn in mu_sn:
             mu_obs.append(mu_sn)
         for mu_cal in mu_cal:
             mu_obs.append(mu_cal)
-        
         mu_model_sn = distmod(h0,zhel[w0],zcmb[w0])
         mu_model_cal = dist[w1]
         for mu_model_sn in mu_model_sn:
@@ -93,13 +109,12 @@ def like(par):
         for mu_model_cal in mu_model_cal:
             mu_model.append(mu_model_cal)
         
-        
         fac= (p1+(2*p2*st[w0]))
         fac1= (p1+(2*p2*st[w1]))
         velterm = (2.17*vel)**2/(c*zcmb)**2
 
-        err = (fac*est[w0])**2 +emmax[w0]**2 +(rv*ebv[w0])**2+2*fac*c_ms[w0]+rv*c_mbv[w0]+sig**2+(0.00000723*vel/zcmb[w0])**2
-        err1 = ((fac1*est[w1])**2) +(emmax[w1]**2) +((rv*ebv[w1])**2)+(2*fac1*c_ms[w1])+(rv*c_mbv[w1])+(edist[w1]**2)
+        err = (fac*est[w0])**2 +emmax[w0]**2 +(rv*ebv[w0])**2+2*fac*c_ms[w0]+rv*c_mbv[w0]+sig**2+(0.00000723*vel/zcmb[w0])**2+(alpha*em[w0])**2
+        err1 = ((fac1*est[w1])**2) +(emmax[w1]**2) +((rv*ebv[w1])**2)+(2*fac1*c_ms[w1])+(rv*c_mbv[w1])+(edist[w1]**2)+(alpha*em[w1])**2
 
 
         for err in err:
@@ -120,7 +135,7 @@ def like(par):
 # EMCEE
 ndim, nwalkers = 8, 80
 ssize=1000
-burnin = 500
+burnin = 200
 
 
 p00 = np.random.rand(nwalkers) * (plim[1] - plim[0]) + plim[0]
@@ -137,7 +152,6 @@ p0 = np.array([p00,p10,p20,rv0,alpha0,sig0,vel0,h00]).T
 
 
 
-
 sampler = emcee.EnsembleSampler(nwalkers, ndim, like)
 print ("running mcmc on "+file)
 start = time.time()
@@ -145,7 +159,6 @@ sampler.run_mcmc(p0,ssize,progress=True)
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
 end = time.time()
 serial_time = end - start
-
 
 # Chains
 fig, axes = pl.subplots(8, figsize=(10, 7), sharex=True)
@@ -160,10 +173,11 @@ for j in range(ndim):
 
 axes[-1].set_xlabel("step number")
 
-#fig.savefig("../plots/steps_91"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+#fig.savefig("../../plots/steps_coffset"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
-
+#tau = sampler.get_autocorr_time()
+#print(tau)
 
  # Printing results
 p0_mcmc,p1_mcmc,p2_mcmc,rv_mcmc,alpha_mcmc,sig_mcmc,vel_mcmc, H0_mcmc = map(lambda v: (v[1], v[2]-v[1], v[1]-v[0]),
@@ -201,8 +215,8 @@ print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 # Triangle plot
 #figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
 
-#figure.savefig("plots/mcmcH0_"+filter+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
-#figure.savefig("../plots/mcmcH0_z01"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+
+#figure.savefig("../../plots/mcmcH0_coffset"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 
 

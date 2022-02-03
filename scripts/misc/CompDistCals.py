@@ -2,25 +2,27 @@ from astropy.io import ascii
 import matplotlib.pylab as pl
 import numpy as np
 from scipy.stats import norm
-from astropy.table import join
-
-tab0 = ascii.read('../data/calibrators/calibrators_sbf.csv')
-
-tab1 = ascii.read('../data/calibrators/calibrators_sbf_new.csv')
-tab2 = ascii.read('../data/calibrators/calibrators_trgb.csv')
-tab3 = ascii.read('../data/calibrators/calibrators_cepheids.csv')
+from astropy.table import join, hstack
 
 
-t = join(tab0,tab1,keys='sn')
-
-(t['sn', 'dist_1','dist_2','host_1']).pprint_all()
-
-
+tab1 = ascii.read('../../data/calibrators/calibrators_sbf_final.csv')
+tab2 = ascii.read('../../data/calibrators/calibrators_trgb.csv')
+tab3 = ascii.read('../../data/calibrators/calibrators_cepheids.csv')
 
 
-print (np.mean(tab1['m']))
-print (np.mean(tab2['m']))
-print (np.mean(tab3['m']))
+t = join(tab2,tab3,keys='sn')
+
+print (hstack([t['sn'], t['dist_1'],t['edist_1']]))
+          
+#(t['sn', 'dist_1','dist_2','host_1']).pprint_all()
+
+
+sys.exit()
+
+
+print (np.max(tab1['dist']))
+print (np.max(tab2['dist']))
+print (np.max(tab3['dist']))
 
 
 
@@ -31,14 +33,14 @@ xrange=[np.min(tab1['dist']),np.max(tab1['dist'])]
 
 
 
-pl.hist(tab3['dist'],bins=10,range=[30,34],histtype='step',label='Cepheid',color='b',lw=2)
-pl.hist(tab2['dist'],bins=10,range=[30,34],histtype='step',label='TRGB',color='r',lw=2)
-pl.hist(tab1['dist'],bins=10,range=[30,34],histtype='step',label='SBF',color='#377eb8',lw=2)
+pl.hist(tab3['dist'],bins=10,range=[30,34],histtype='stepfilled',label='Cepheid',color='b',lw=2, alpha=.3)
+pl.hist(tab2['dist'],bins=10,range=[30,34],histtype='stepfilled',label='TRGB',color='r',lw=2, alpha=.3)
+pl.hist(tab1['dist'],bins=10,range=[30,34],histtype='stepfilled',label='SBF',color='#377eb8',lw=2, alpha=.3)
 
 pl.xlabel(r'$Distacne \ moduli \ (\mu)$',fontsize=14), pl.ylabel('$Number$',fontsize=14)
-pl.ylim(0,10),pl.xlim(30,35)
+pl.ylim(0,10),pl.xlim(29,35)
 pl.legend(),pl.grid()
-pl.savefig('../plots/caldist.pdf')
+pl.savefig('../../plots/caldist.pdf')
 #pl.show()
 
 

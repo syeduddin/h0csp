@@ -25,12 +25,12 @@ def distmod(h,z1,z2):
     t3 = 1 + (((1-q)/2)*z2)
     return (5*np.log10(t1*t2*t3)) +25
 
-H = ascii.read('../data/working/H_trgb.csv')
+H = ascii.read('../../data/working/H_sbf.csv')
 
 filter = ['u','B','g','V','r','i','Y','J','H']
 
 for i in range(len(filter)):
-    data =  ascii.read('../data/working/'+filter[i]+'_trgb.csv')
+    data =  ascii.read('../../data/working/'+filter[i]+'_sbf.csv')
     tab = join(H,data,keys='sn')
 
     w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao'))
@@ -139,7 +139,7 @@ for i in range(len(filter)):
 
 
 
-    f1 =open('../results/TRGB_result_'+filter[i]+'.txt','w')
+    f1 =open('../../results/SBF_result_'+filter[i]+'.txt','w')
     f1.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%('p0','p1','p2','beta','alpha','sig_int','vel','H0'))
 
     f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]))
@@ -165,7 +165,7 @@ figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alp
 
 print("Serial took {0:.1f} minutes".format(serial_time/60.))
 
-#os.system('say "your program has finished."')
+os.system('say "your program has finished."')
 
     
 

@@ -29,9 +29,8 @@ pl.figure(figsize=(20,10))
 filter = ['u','B','g','V','r','i','Y','J','H']
 for i in range(len(filter)):
     
-    result = ascii.read('../results/'+filter[i]+'_ceph_result.txt')
-    #result = ascii.read('../results/Ceph_result_'+filter[i]+'.txt')
-
+    result = ascii.read('../../results/'+filter[i]+'_ceph_result.txt')
+    #result = ascii.read('../../results/B_ceph_result.txt')
     p0=result['p0'][0]
     p1=result['p1'][0]
     p2=result['p2'][0]
@@ -42,7 +41,7 @@ for i in range(len(filter)):
     h0=result['H0'][0]
     
     
-    tab = ascii.read('../data/working/'+filter[i]+'_ceph.csv')
+    tab = ascii.read('../../data/working/'+filter[i]+'_ceph.csv')
     #w= np.where((tab['subtype']!='Ia-91T') & (tab['subtype']!='Ia-91bg') & (tab['caltype']=='none')& (tab['sample']!='bla'))
    
     w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao'))
@@ -56,11 +55,15 @@ for i in range(len(filter)):
     bv = tab['BV'][w]
     ebv = tab['eBV'][w]
     m_csp = tab['m'][w]
+    ml = tab['ml'][w]
+    mu = tab['mu'][w]
     dist = tab['dist'][w]
     edist = tab['edist'][w]
     c_ms = tab['covMs'][w]
     c_mbv = tab['covBV_M'][w]
     sn = tab['sn'][w]
+    sample = tab['sample'][w]
+    cal = tab['caltype'][w]
    
     subtype = tab['subtype'][w] 
     Ho_dist = tab['dist'][w]<0
@@ -100,24 +103,33 @@ for i in range(len(filter)):
     data['zcmb']=zcmb
     data['st']=st
     data['B-V']=bv
+    data['m'] =m_csp
+    data['ml'] =ml
+    data['mu'] =mu
+    data['sample']=sample
+    data['cal']=cal
     
-    ascii.write(data,'../results/Ceph_res_'+filter[i]+'.csv',format='csv', delimiter=',',overwrite=True)
+    ascii.write(data,'../../results/Ceph_res_'+filter[i]+'.csv',format='csv', delimiter=',',overwrite=True)
     
     pl.subplot(3,3,i+1)
    
     pl.grid()
     Ho_dists = tab['dist'][w] > 0
    
-    pl.errorbar(zcmb,dmu,yerr=err,fmt='o',mfc='white',color='k',ms=10,label='$'+filter[i]+'$')
+    pl.errorbar(zcmb,dmu,yerr=err,fmt='o',mfc='white',color='k',ms=12,label='$'+filter[i]+'$')
     wt= np.where((subtype=='Ia-91T'))
-    wbg= np.where((subtype=='Ia-bg'))
-    pl.errorbar(zcmb[wt],dmu[wt],yerr=err[wt],fmt='o',color='b',ms=10)
-    pl.errorbar(zcmb[wbg],dmu[wbg],yerr=err[wbg],fmt='o',color='b',ms=10)
-
-    pl.errorbar(zcmb[Ho_dists],dmu[Ho_dists],yerr=err2[Ho_dists],fmt='o',color='g',ms=10)
+    wbg= np.where((subtype=='Ia-91bg'))
+   
+    
+    pl.errorbar(zcmb[wbg],dmu[wbg],yerr=err[wbg],fmt='s',color='#f781bf',ms=10,markeredgecolor='k')
+    pl.errorbar(zcmb[wt],dmu[wt],yerr=err[wt],fmt='p',color='b',ms=12,markeredgecolor='k')
+    pl.errorbar(zcmb[Ho_dists],dmu[Ho_dists],yerr=err2[Ho_dists],fmt='d',color='g',ms=12,markeredgecolor='k')
 
     rms91t=np.sqrt(np.sum(np.power(dmu[wt],2))/len(dmu[wt]))
+    rms91bg=np.sqrt(np.sum(np.power(dmu[wbg],2))/len(dmu[wbg]))
     print (filter[i],'91T','%0.3f'%rms91t, len(dmu[wt]))
+    print (filter[i],'91bg','%0.3f'%rms91bg, len(dmu[wt]))
+
     z = np.arange(0.0001,.15,.001)
     evel= (((2.17*vel)/(z*c))**2) +(sig**2)
 
@@ -132,19 +144,19 @@ for i in range(len(filter)):
     multi_picker(evel)
 
 
-    pl.plot(multi_picker(z),multi_picker(evel),'r-',lw=2)
+    pl.plot(multi_picker(z),multi_picker(evel),'r-',lw=3,zorder=3)
 
-    pl.plot(multi_picker(z),multi_picker(-evel),'r-',lw=2)
-    pl.ylim(-1.5,1.5),pl.xlim(0.0,0.14)
+    pl.plot(multi_picker(z),multi_picker(-evel),'r-',lw=3,zorder=3)
+    pl.ylim(-1.5,1.5),pl.xlim(0.0,0.15)
     pl.axhline(0,color='k')
-    pl.legend(numpoints =1)
+    pl.legend(numpoints =1,fontsize=16)
     pl.ylabel(r'$\Delta \mu \ (mag)$' ,fontsize=18)
     pl.xlabel(r'$z_{cmb}$' ,fontsize=18)
     #pl.axhline(sig[i],color='g')
     #pl.axhline(-sig[i],color='g')
     #pl.savefig('plots/hd_burns.pdf')
 pl.tight_layout()
-pl.savefig('../plots/hd_ceph.pdf')
+pl.savefig('../../plots/hd_ceph.pdf')
 #pl.show()
 
 
