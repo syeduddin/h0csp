@@ -45,7 +45,7 @@ newt1 = unique(bigt, keys='sn')
 #newt2 = unique(bigt[w], keys='sn')
 w = np.where(newt1['dist']>1)
 print (len(newt1['dist'][w]))
-sys.exit()
+#sys.exit()
 
 
 newt1.write('../../data/working/'+filter+'_sbf.csv', format='ascii.csv', delimiter=',',overwrite=True)

@@ -41,28 +41,24 @@ c_ms = tab['covMs']
 c_mbv = tab['covBV_M']
 
 
+#All cuts
+#w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['zcmb']>0.01) & (tab['dist']<0) & (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5))
+
+# single cut
+w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['zcmb']>0.02)) 
+
+f1 =open('../results/'+file[:-4]+'_results_z02.txt','w') ### MUST change !!
+print (f1)
 
 
-w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')& (tab['zcmb']>0.01) & (tab['dist']<0) & (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5))
+w = dist>0
 
-
-#w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['t0']<5)) 
-
-
-f1 =open('../results/'+file[:-4]+'_results_cut.txt','w')
-
-w1 = (dist>0)
-
+print (type(w))
+w1 = random.choice(w,5)
+print (w1)
 
 print (file, len(st[w0]),len(st[w1]))
 
-#mmax[w0] = (mmax[w0]*1.0)+.02
-#st[w0] = (st[w0]*1.0)-0.01
-#bv[w0] = (bv[w0]*1.0)-0.03
-
-#mmax[w1] = (mmax[w1]*1.)+.007
-#st[w1] = (st[w1]*1.0)+0.02
-#bv[w1] = (bv[w1]*1.0)
 
 
 #initial guess
@@ -97,7 +93,7 @@ def like(par):
         mu_sn = mmax[w0] - p - p1*(st[w0] - 1.) -  p2*(st[w0] - 1.)**2 - rv*bv[w0] - alpha*(m_csp[w0]-np.median(m_csp[w0]))
 
         mu_cal = mmax[w1] - p - p1*(st[w1] - 1.) -  p2*(st[w1] - 1.)**2 - rv*bv[w1] - alpha*(m_csp[w1]-np.median(m_csp[w1]))
-
+        
         for mu_sn in mu_sn:
             mu_obs.append(mu_sn)
         for mu_cal in mu_cal:
@@ -115,7 +111,6 @@ def like(par):
 
         err = (fac*est[w0])**2 +emmax[w0]**2 +(rv*ebv[w0])**2+2*fac*c_ms[w0]+rv*c_mbv[w0]+sig**2+(0.00000723*vel/zcmb[w0])**2+(alpha*em[w0])**2
         err1 = ((fac1*est[w1])**2) +(emmax[w1]**2) +((rv*ebv[w1])**2)+(2*fac1*c_ms[w1])+(rv*c_mbv[w1])+(edist[w1]**2)+(alpha*em[w1])**2
-
 
         for err in err:
             mu_stat.append(err)

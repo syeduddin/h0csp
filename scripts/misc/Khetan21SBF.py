@@ -18,8 +18,6 @@ for n,i in enumerate(t4['caltype']):
          
 t2.rename_column('name','sn')
 
-
-
 t3 = Table()
 
 t3['sn'] = t1['sn']
@@ -78,12 +76,14 @@ table['host']=t['host']
 table['dist']=t['dist']
 table['edist']=t['edist']
 table['caltype']='s'
+print (table)
 
+w = np.where(t4['caltype']!='c')
 
-final = vstack([t4,table])
+final = vstack([t4[w],table])
 final = unique(final,keys='sn',keep='last')
 
 
 table.write('../../data/calibrators/calibrators_sbf_'+filter+'.csv', format='ascii.csv', delimiter=',',overwrite=True)
 
-#final.write('../../data/working/'+filter+'_sbf.csv', format='ascii.csv', delimiter=',',overwrite=True)
+final.write('../../data/working/'+filter+'_sbfk21.csv', format='ascii.csv', delimiter=',',overwrite=True)

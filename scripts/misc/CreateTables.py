@@ -1,7 +1,7 @@
 from astropy.io import ascii
 from astropy.table import join,vstack,Table
 
-tab = ascii.read('../../data/working/B_ceph.csv')
+tab = ascii.read('../../data/working/B_sbfj21.csv')
 import numpy as np
 
 st = tab['st']
@@ -41,5 +41,5 @@ data['$Distant$']= dist[w]
 data['$eDistant$']= edist[w]
 
 
-
-ascii.write(data,'../../results/B_ceph.txt',format='latex',overwrite=True)
+print (data)
+ascii.write(data,'../../results/B_j21.txt',format='latex',overwrite=True)

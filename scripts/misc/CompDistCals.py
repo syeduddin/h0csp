@@ -4,8 +4,8 @@ import numpy as np
 from scipy.stats import norm
 from astropy.table import join, hstack
 
-
-tab1 = ascii.read('../../data/calibrators/calibrators_sbf_final.csv')
+#tab0 = ascii.read('../../data/calibrators/calibrators_B_sbfj21.csv')
+tab1 = ascii.read('../../data/calibrators/calibrators_B_sbfcombined.csv')
 tab2 = ascii.read('../../data/calibrators/calibrators_trgb.csv')
 tab3 = ascii.read('../../data/calibrators/calibrators_cepheids.csv')
 
@@ -17,7 +17,6 @@ print (hstack([t['sn'], t['dist_1'],t['edist_1']]))
 #(t['sn', 'dist_1','dist_2','host_1']).pprint_all()
 
 
-sys.exit()
 
 
 print (np.max(tab1['dist']))
@@ -33,13 +32,14 @@ xrange=[np.min(tab1['dist']),np.max(tab1['dist'])]
 
 
 
-pl.hist(tab3['dist'],bins=10,range=[30,34],histtype='stepfilled',label='Cepheid',color='b',lw=2, alpha=.3)
-pl.hist(tab2['dist'],bins=10,range=[30,34],histtype='stepfilled',label='TRGB',color='r',lw=2, alpha=.3)
-pl.hist(tab1['dist'],bins=10,range=[30,34],histtype='stepfilled',label='SBF',color='#377eb8',lw=2, alpha=.3)
+pl.hist(tab3['dist'],bins=10,range=[30,34],histtype='step',label='Cepheid',color='b',lw=2)
+pl.hist(tab2['dist'],bins=10,range=[30,34],histtype='step',label='TRGB',color='r',lw=2)
+pl.hist(tab1['dist'],bins=10,range=[30,34],histtype='stepfilled',label='SBF',color='k',lw=2, alpha=.3)
+#pl.hist(tab0['dist'],bins=10,range=[30,34],histtype='stepfilled',color='k',lw=2, alpha=.3)
 
-pl.xlabel(r'$Distacne \ moduli \ (\mu)$',fontsize=14), pl.ylabel('$Number$',fontsize=14)
-pl.ylim(0,10),pl.xlim(29,35)
-pl.legend(),pl.grid()
+pl.xlabel(r'$Distance \ moduli \ (\mu)$',fontsize=14), pl.ylabel('$Number$',fontsize=14)
+pl.ylim(0,8),pl.xlim(29.9,34.1)
+pl.legend(loc='upper left'),pl.grid()
 pl.savefig('../../plots/caldist.pdf')
 #pl.show()
 

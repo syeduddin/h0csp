@@ -3,7 +3,7 @@ import numpy as np
 import emcee
 import astropy.io.fits as pyfits
 import matplotlib.pylab as pl
-import triangle
+import corner
 import random,os
 from multiprocessing import Pool
 from multiprocessing import cpu_count
@@ -13,8 +13,7 @@ from astropy.io import ascii
 
 #filter = raw_input("Please enter a filter name:\n")
 
-filter = sys.argv[1]
-print  'Working with filter:'+filter
+
 
 ncpu = cpu_count()
 print("{0} CPUs".format(ncpu))
@@ -24,7 +23,7 @@ c = 300000.
 q=-0.53
 
 
-tab = ascii.read('data/'+filter+'_all.dat')
+tab = ascii.read('../../data/working/B_all.csv')
 
 st = tab['st']
 est = tab['est']
@@ -41,9 +40,9 @@ c_ms = tab['covMs']
 c_mbv = tab['covBV_M']
 
 Ho_dists = tab['dist'] < 0
-w = np.where(dist>1) 
 
-print len(st), len(st)-len(st[Ho_dists])
+            
+print (len(st), len(st)-len(st[Ho_dists]))
 
 #initial guess
 plim=-19.3, -19.2
@@ -122,11 +121,12 @@ eps30 = np.random.rand(nwalkers) * (eps3lim[1] - eps3lim[0]) + eps3lim[0]
 sd_cal0 = np.random.rand(nwalkers) * (sd_callim[1] - sd_callim[0]) + sd_callim[0]
 
 
-p0 = zip(*[p00,p10,p20,rv0,alpha0,sig0,vel0,h00,eps10,eps20,eps30,sd_cal0])
+#p0 = zip(*[p00,p10,p20,rv0,alpha0,sig0,vel0,h00,eps10,eps20,eps30,sd_cal0])
+p0 = np.array([p00,p10,p20,rv0,alpha0,sig0,vel0,h00,eps10,eps20,eps30,sd_cal0]).T
 
 
-sampler = emcee.EnsembleSampler(nwalkers, ndim, like,pool=Pool())
-print "running mcmc.."
+sampler = emcee.EnsembleSampler(nwalkers, ndim, like)
+print ("running mcmc..")
 start = time.time()
 sampler.run_mcmc(p0,ssize,progress=True)
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
@@ -167,10 +167,10 @@ print("""MCMC result:
 
 
 # Triangle plot
-figure = triangle.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$",r"$\epsilon_1$",r"$\epsilon_2$",r"$\epsilon_3$",r"$\sigma_{cal}$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0],eps1_mcmc[0],eps2_mcmc[0],eps3_mcmc[0],sd_cal_mcmc[0]],show_titles=True)
+figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$",r"$\epsilon_1$",r"$\epsilon_2$",r"$\epsilon_3$",r"$\sigma_{cal}$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0],eps1_mcmc[0],eps2_mcmc[0],eps3_mcmc[0],sd_cal_mcmc[0]],show_titles=True)
 
 #figure.savefig("plots/mcmcH0_"+filter+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
-figure.savefig("plots/mcmcH0_All"+filter+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+figure.savefig("../../plots/mcmcH0_All"+filter+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 
 
@@ -178,7 +178,7 @@ figure.savefig("plots/mcmcH0_All"+filter+"_"+str(nwalkers)+"_"+str(ssize)+".pdf"
 #pl.savefig("H0.pdf")
 
 
-print "Mean acceptance fraction:", np.mean(sampler.acceptance_fraction)
+print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 print("Serial took {0:.1f} minutes".format(serial_time/60.))
 
 os.system('say "your program has finished."')

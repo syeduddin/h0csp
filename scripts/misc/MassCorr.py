@@ -31,17 +31,20 @@ for j in range(len(filter)):
     
     
     
-    tab = ascii.read('../../results/Ceph_res_'+filter[j]+'.csv')
+    tab = ascii.read('../../results/Ceph_res_nohm'+filter[j]+'.csv')
    
-    #w =np.where((tab['sample']=='CSPI')& (tab['cal']=='none'))
-    w = np.where(tab['cal']=='none')
+    w =np.where((tab['sample']=='CSPI')& (tab['cal']=='none'))
+    #w = np.where(tab['cal']=='none')
     mass = tab['m'][w]
+    print len(tab['sn'])
+    
+    
     ml =  tab['m'][w]-tab['ml'][w]
     mu = tab['mu'][w]- tab['m'][w]
     em = (ml+mu)/2.
     res=tab['res'][w]
     eres=tab['eres'][w]
-  
+
     for n,i in enumerate(mass):
         if i==11.5: mass[n]=random.uniform(7.1,7.9)
             
@@ -74,8 +77,8 @@ for j in range(len(filter)):
     esl.append('%6.3f'%np.std(lm.chain['beta']))
 
 
-    print ' $',filter[j],'$', '&%.3f'%np.mean(lm.chain['beta']),'(%.3f)'%(np.std(lm.chain['beta'])),'&', '%.3f'%(mean_x1_high-mean_x1_low), '(%.3f)'%(np.sqrt((error_x1_low**2)+(error_x1_high**2))),'&','%.2f'%np.median(mass) 
-
+    #print '& $',filter[j],'$', '&%.3f'%np.mean(lm.chain['beta']),'(%.3f)'%(np.std(lm.chain['beta'])),'&', '%.3f'%(mean_x1_high-mean_x1_low), '(%.3f)'%(np.sqrt((error_x1_low**2)+(error_x1_high**2))),'&','%.2f'%np.median(mass),'\\\\' 
+    #sys.exit()
     xl = np.array([5, 15])    
     
     pl.subplot(3,3,j+1)
@@ -98,7 +101,7 @@ for j in range(len(filter)):
     #pl.legend()
 pl.tight_layout()
 
-pl.savefig('../../plots/AllMassCorr.pdf',bbox_inches='tight', dpi=100)
+pl.savefig('../../plots/AllMassCorrnoHM_csp1.pdf',bbox_inches='tight', dpi=100)
     
    
 
@@ -109,4 +112,6 @@ print (', '.join(esl))
 print ('Offsets')
 print (', '.join(off))
 print (', '.join(eoff))
+
+
 

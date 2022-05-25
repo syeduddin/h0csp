@@ -25,15 +25,19 @@ def distmod(h,z1,z2):
     t3 = 1 + (((1-q)/2)*z2)
     return (5*np.log10(t1*t2*t3)) +25
 
-H = ascii.read('../../data/working/H_sbf.csv')
+H = ascii.read('../../data/working/H_sbfcombined.csv')
 
 filter = ['u','B','g','V','r','i','Y','J','H']
-
+#filter='B'
 for i in range(len(filter)):
-    data =  ascii.read('../../data/working/'+filter[i]+'_sbf.csv')
+    data =  ascii.read('../../data/working/'+filter[i]+'_sbfcombined.csv')
     tab = join(H,data,keys='sn')
+    print (filter[i])
 
     w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao'))
+    
+    #w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')& (tab['zcmb_2']>0.01) &(tab['dist_2']<0)  & (tab['t0_2']<5) & (tab['st_2']> 0.5) & (tab['BV_2']<0.5))
+
     st = tab['st_2'][w]
     est = tab['est_2'][w]
     zhel = tab['zhel_2'][w]
@@ -50,6 +54,8 @@ for i in range(len(filter)):
     sn = tab['sn'][w]
     print (len(sn))
     Ho_dists = tab['dist_2'][w] < 0
+    #Ho_dists = tab['dist_2'] > 0
+   
     
     #initial guess
     plim=-19.3, -19.2
@@ -139,7 +145,7 @@ for i in range(len(filter)):
 
 
 
-    f1 =open('../../results/SBF_result_'+filter[i]+'.txt','w')
+    f1 =open('../../results/TRGB_result_'+filter[i]+'.txt','w')
     f1.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%('p0','p1','p2','beta','alpha','sig_int','vel','H0'))
 
     f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]))

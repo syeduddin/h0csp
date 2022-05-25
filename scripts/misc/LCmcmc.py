@@ -28,14 +28,14 @@ q=-0.53
 #tab = ascii.read('../data/working/B_ceph.csv')
 #tab = ascii.read('data/CSPI_Burns2018.dat')
 file = sys.argv[1]
-tab = ascii.read('../data/working/'+file)
+tab = ascii.read('../../data/working/'+file)
 
 #w = np.where((tab['subtype']!='Ia-91T') & (tab['subtype']!='Ia-91bg')) # sample selection
 
-w = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao'))
+w = tab['caltype']!='none'
 
 
-f1 =open('../results/'+file[:-4]+'_result_cal.txt','w')
+f1 =open('../../results/'+file[:-4]+'_result_allcal.txt','w')
 
 
 Ho_dists = tab['dist'][w] < 0
@@ -74,10 +74,10 @@ def distmod(h,z1,z2): # z1=zhel, z2=zcmb
 
 # Liklihood function
 def like(par):
-    p,p1,p2,rv,alpha,sig,vel = par
-    if  -25.0<p<-15.0  and -10.0<p1<10.0 and -10.0<p2<10.0 and 0.<rv<10.0 and -1.<alpha<1. and 0.<sig<1. and 0.<vel<1000.:
+    p1,p2,rv,sig,vel = par
+    if  -10.0<p1<10.0 and -10.0<p2<10.0 and 0.<rv<10.0 and 0.<sig<1. and 0.<vel<1000.:
 
-        mu_obs = mmax - p - p1*(st - 1.) -  p2*(st - 1.)**2 - rv*bv - alpha*(m_csp-np.median(m_csp))
+        mu_obs = mmax -19.0- p1*(st - 1.) -  p2*(st - 1.)**2 - rv*bv 
         #mu_obs = mmax - p - p1*(st - 1.) -  p2*(st - 1.)**2 - rv*bv - (alpha*m_csp) # slope 
 
 
@@ -99,7 +99,7 @@ def like(par):
         return -np.inf
           
 # EMCEE  
-ndim, nwalkers =7, 70
+ndim, nwalkers =5, 50
 ssize=1000
 burnin =200   
 
@@ -114,7 +114,7 @@ vel0 = np.random.rand(nwalkers) * (vellim[1] - vellim[0]) + vellim[0]
 h00 = np.random.rand(nwalkers) * (h0lim[1] - h0lim[0]) + h0lim[0]
 
 #p0 = zip(*[p00,p10,p20,rv0,alpha0,sig0,vel0])
-p0 = np.array([p00,p10,p20,rv0,alpha0,sig0,vel0]).T
+p0 = np.array([p10,p20,rv0,sig0,vel0]).T
 
 
 sampler = emcee.EnsembleSampler(nwalkers, ndim, like)
@@ -127,9 +127,9 @@ serial_time = end - start
 
 
 # Chains
-fig, axes = pl.subplots(7, figsize=(10, 7), sharex=True)
+fig, axes = pl.subplots(5, figsize=(10, 7), sharex=True)
 samples = sampler.get_chain()
-labels = ["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$"]
+labels = ["$P1$", "$P2$", r"$\beta$", r"$\sigma_{int}$","$V_{pec}$"]
 for j in range(ndim):
     ax = axes[j]
     ax.plot(samples[:, :, j], "k", alpha=0.3)
@@ -139,48 +139,45 @@ for j in range(ndim):
 
 axes[-1].set_xlabel("step number")
 
-#fig.savefig("../plots/steps_full.pdf")
+fig.savefig("../../plots/steps_allcal.pdf")
 
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
 
 
  # Printing results
-p0_mcmc,p1_mcmc,p2_mcmc,rv_mcmc,alpha_mcmc,sig_mcmc,vel_mcmc = map(lambda v: (v[1], v[2]-v[1], v[1]-v[0]),
+p1_mcmc,p2_mcmc,rv_mcmc,sig_mcmc,vel_mcmc = map(lambda v: (v[1], v[2]-v[1], v[1]-v[0]),
                              zip(*np.percentile(samples, [16, 50, 84],
                                                 axis=0)))
 
 
 print("""MCMC result:
-    P0 = {0[0]} +{0[1]} -{0[2]} 
-    P1 = {1[0]} +{1[1]} -{1[2]} 
-    P2 = {2[0]} +{2[1]} -{2[2]} 
-    Beta = {3[0]} +{3[1]} -{3[2]}
-    Alpha = {4[0]} +{4[1]} -{4[2]}
-    Sigma = {5[0]} +{5[1]} -{5[2]}
-    Vpec = {6[0]} +{6[1]} -{6[2]}
+    P1 = {0[0]} +{0[1]} -{0[2]} 
+    P2 = {1[0]} +{1[1]} -{1[2]} 
+    Beta = {2[0]} +{2[1]} -{2[2]}
+    Sigma = {3[0]} +{3[1]} -{3[2]}
+    Vpec = {4[0]} +{4[1]} -{4[2]}
 
    
-""".format(p0_mcmc, p1_mcmc, p2_mcmc,rv_mcmc,alpha_mcmc,sig_mcmc,vel_mcmc))
+""".format(p1_mcmc, p2_mcmc,rv_mcmc,sig_mcmc,vel_mcmc))
 
 
 
 
 
-f1.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%('p0','p1','p2','beta','alpha','sig_int','vel'))
+#f1.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%('p1','p2','beta','sig_int','vel'))
 
-f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0]))
+#f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0]))
 
-f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[1],p1_mcmc[1],p2_mcmc[1],rv_mcmc[1],alpha_mcmc[1],sig_mcmc[1],vel_mcmc[1]))
-f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[2],p1_mcmc[2],p2_mcmc[2],rv_mcmc[2],alpha_mcmc[2],sig_mcmc[2],vel_mcmc[2]))
+#f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[1],p1_mcmc[1],p2_mcmc[1],rv_mcmc[1],alpha_mcmc[1],sig_mcmc[1],vel_mcmc[1]))
+#f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[2],p1_mcmc[2],p2_mcmc[2],rv_mcmc[2],alpha_mcmc[2],sig_mcmc[2],vel_mcmc[2]))
 
 f1.close()
 
-sys.exit()
 
 # Triangle plot
-figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", "$R_V$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0]],show_titles=True)
+figure = corner.corner(samples,labels=["$P1$", "$P2$", "$R_V$", r"$\sigma_{int}$","$V_{pec}$"],quantiles=[0.16, 0.5, 0.84],truths=[p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],sig_mcmc[0],vel_mcmc[0]],show_titles=True)
 
-#figure.savefig("../plots/mcmcH0_full.pdf")
+figure.savefig("../../plots/mcmcH0_allcal.pdf")
 
 
 

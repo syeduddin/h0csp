@@ -1,4 +1,4 @@
-       name        zhel        zcmb      st     est     Mmax   eMmax      t0    EBVmw   eEBVmw        covMs       Ho     eHo   meth       BV     eBV    covBV_M  
+       name        zhel        zcmb      st     est     Mmax   eMmax      t0    EBVmw   eEBVmw        covMs       Ho     eHo   method       BV     eBV    covBV_M  
     SN1970J      0.0132   0.0119644    0.95   0.054   14.808   0.067   -14.0   0.0689   0.0069     0.002535   33.499   0.181     Ho    0.180   0.104   0.004489  
     SN1980N    0.005871   0.0055142   0.903   0.006   12.458   0.009    -1.5    0.018   0.0018    4.425e-06   31.817   0.394     Ho    0.070   0.012   0.000081  
     SN1981B    0.006027   0.0071693   0.941   0.005    11.98   0.005    -6.5   0.0157   0.0016    1.136e-05   32.387   0.303     Ho    0.070   0.008   0.000025  

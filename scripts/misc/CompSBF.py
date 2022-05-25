@@ -7,6 +7,53 @@ from scipy.stats import linregress
 from collections import Counter
 filter = 'B'
 
+
+
+j = ascii.read('../../data/calibrators/calibrators_B_sbfj21.csv') # only dist
+k = ascii.read('../../data/calibrators/calibrators_sbf_final.csv',format='csv') # only dist
+
+
+
+print (np.mean(j['dist']))
+print (np.mean(k['dist']))
+
+range = [np.min(k['dist']),np.max(k['dist'])]
+pl.hist(j['dist'],histtype='stepfilled',bins=10,range=range,label='Jensen+21',color='r',alpha=.5)
+pl.hist(k['dist'],histtype='stepfilled',bins=10,range=range,label='Khetan+21',color='b',alpha=.5)
+pl.legend()
+pl.xlabel('$Distacne \ moduli \ (\mu)$',fontsize=14),pl.ylabel('$Number$',fontsize=14)
+pl.grid()
+
+#pl.savefig('../../plots/compSBFdist.pdf')
+t = join(j,k,keys='sn')
+
+print (np.mean(t['dist_1']-t['dist_2']))
+
+print (np.mean(t['BV_1']-t['BV_2']))
+
+error=np.sqrt((t['edist_1'])**2+(t['edist_2'])**2)
+#print (np.mean(error)/np.sqrt(7.))
+
+sys.exit()
+
+
+pl.errorbar (t['dist_1'],t['dist_2'], xerr=t['edist_1'],yerr=t['edist_2'],fmt='ko',ms=8)
+pl.xlabel('Jensen+21'),pl.ylabel('Kehtan+21')
+pl.grid()
+
+pl.savefig('../../plots/compSBFmu.pdf')
+sys.exit()
+
+pl.xlabel('old'),pl.ylabel('new')
+pl.savefig('../../plots/compSBFBmax.pdf')
+
+
+j =  ascii.read('../../data/calibrators/sbf_jensen21.csv') # only dist
+c= ascii.read('../../data/calibrators/calibrators_B_sbfj21.csv') # only dist
+
+print (set(j['gal']).difference(set(c['host'])))
+sys.exit()
+
 t1 = ascii.read('../../data/lc/'+filter+'_max_SBF_old.dat')
 t2 = ascii.read('../../data/lc/'+filter+'_max_SBF.dat')
 
