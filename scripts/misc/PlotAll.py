@@ -39,25 +39,26 @@ pl.savefig('../../plots/st_bv.pdf')
 
 
 
-pl.figure(2,figsize=(20,10))
-pl.subplot(1,2,1)
+pl.figure(2)
+pl.subplot(2,1,1)
 pl.hist(tab1['m'][w],bins=50,range=[7,12],histtype='stepfilled',label='CSP',color='k', alpha=.3)
 pl.hist(tab1['m'][s1],bins=50,range=[7,12],histtype='step',label='CSPI',color='r',ls='-',lw=2)
 pl.hist(tab1['m'][s2],bins=50,range=[7,12],histtype='step',label='CSPII',color='b',ls='-',lw=2)
-pl.xlabel(r'$Log \ host \ M_{stellar} \ (M_{\odot})$',fontsize=18), pl.ylabel('$Number$',fontsize=18)
-pl.legend(loc='upper left',fontsize=16),pl.grid()
-pl.xticks(fontsize=16),pl.yticks(fontsize=16)
+pl.xlabel(r'$Log \ host \ M_{stellar} \ (M_{\odot})$',fontsize=12), pl.ylabel('$Number$',fontsize=12)
+pl.legend(loc='upper left',fontsize=12),pl.grid()
+pl.xticks(fontsize=12),pl.yticks(fontsize=12)
+pl.ylim(0,25),pl.xlim(7.9,12.1)
 
-pl.subplot(1,2,2)
+pl.subplot(2,1,2)
 pl.hist(tab1['m'][w1],bins=20,range=[7,12],histtype='step',label='Cepheid',color='b',lw=2)
 pl.hist(tab2['m'][w2],bins=20,range=[7,12],histtype='step',label='TRGB',color='r',lw=2 )
 pl.hist(tab3['m'][w3],bins=20,range=[7,12],histtype='stepfilled',label='SBF',color='k',lw=2,alpha=.3)
 
-pl.xlabel(r'$Log \ host \ M_{stellar} \ (M_{\odot})$',fontsize=18), pl.ylabel('$Number$',fontsize=18)
+pl.xlabel(r'$Log \ host \ M_{stellar} \ (M_{\odot})$',fontsize=12), pl.ylabel('$Number$',fontsize=12)
 pl.ylim(0,12),pl.xlim(7.9,12.1)
-pl.legend(loc='upper left',fontsize=16),pl.grid()
-pl.xticks(fontsize=16),pl.yticks(fontsize=16)
-
+pl.legend(loc='upper left',fontsize=12),pl.grid()
+pl.xticks(fontsize=12),pl.yticks(fontsize=12)
+pl.tight_layout()
 pl.savefig('../../plots/massdist.pdf')
 
 
@@ -94,3 +95,22 @@ pl.grid()
 pl.xticks(fontsize=16),pl.yticks(fontsize=16)
 
 pl.savefig('../../plots/z_st_bv.pdf')
+
+
+pl.figure(5,figsize=(20,10))
+wh = np.where((tab1['sample']=='CSPI') & (tab1['m']!=11.5))
+wl = np.where((tab1['sample']=='CSPII') & (tab1['m']!=11.5))
+
+pl.subplot(1,2,1)
+pl.plot(tab1['m'][wh],tab1['st'][wh],'ro',label='CSPI',ms=12)
+pl.plot(tab1['m'][wl],tab1['st'][wl],'bd',label='CSPII',ms=12)
+pl.xlabel(r'$Log \ host \ M_{stellar} \ (M_{\odot})$',fontsize=18)
+pl.ylabel(r'$s_{BV}$',fontsize=18)
+
+pl.legend(numpoints=1)
+pl.subplot(1,2,2)
+pl.plot(tab1['m'][wh],tab1['BV'][wh],'ro',label='CSPI',ms=12)
+pl.plot(tab1['m'][wl],tab1['BV'][wl],'bd',label='CSPII',ms=12)
+pl.xlabel(r'$Log \ host \ M_{stellar} \ (M_{\odot})$',fontsize=18)
+pl.ylabel(r'$B-V \ (mag)$',fontsize=18)
+pl.savefig('../../plots/mass_stbv.pdf')

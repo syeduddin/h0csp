@@ -16,11 +16,11 @@ csp=ascii.read('../../data/hosts/proj_dist.csv')
 
 
 indir = '../../results/'
-path = ['u','B','g','V','r','i','Y','J','H']
+#path = ['u','B','g','V','r','i','Y','J','H']
 
-#path = 'B'
+path = 'B'
 
-pl.figure(figsize=(20,10))
+#pl.figure(figsize=(20,10))
 #plot all residuals
 for j in range(len(path)):
     data = ascii.read(indir+'/Ceph_res_'+path[j]+'.csv')
@@ -68,32 +68,36 @@ for j in range(len(path)):
    
 
    
-    pl.subplot(3,3,j+1)
+    #pl.subplot(3,3,j+1)
    
     pl.grid()
-
-    pl.errorbar(proj,res,yerr=eres,ls='None',color='k',alpha=.3)
+    pl.hist(bv[wl],bins=50,range=[-0.25,1.25],histtype='stepfilled',label='<10 kpc',color='r',alpha=.5)
+    pl.hist(bv[wh],bins=50,range=[-0.25,1.25],histtype='stepfilled',label='>10 kpc',color='b',alpha=.5)
+    pl.xlabel(r'$B-V \ (mag)$' ,fontsize=12),
+    pl.legend(loc='upper right')
+    #pl.errorbar(proj,res,yerr=eres,ls='None',color='k',alpha=.3)
     #pl.plot(proj,bv,'ro')
 
-    cm = pl.cm.get_cmap('plasma')
-    pl.scatter(proj,res,c=z,cmap=cm,s=100)
-    pl.colorbar()
+    #cm = pl.cm.get_cmap('plasma')
+    #pl.scatter(proj,res,c=z,cmap=cm,s=100)
+    #pl.colorbar()
     #pl.colorbar().set_label(r'$Log \ host \ M_{\rm stellar} \ (M_{\odot})$', fontsize=14)
     #pl.colorbar().set_label(r'${(B-V) \ (mag)}$', fontsize=14)
     #pl.colorbar().set_label(r'$\Delta \mu \ ('+path[j][-1:]+') \ (mag)$', fontsize=14)
     #pl.colorbar().set_label(r'$s_{BV}$', fontsize=14)
 
 
-    pl.xlabel(r'$Projected \ Distance \ (kpc)$',fontsize=14)
-    pl.ylabel(r'$\Delta \mu \ ('+path[j][-1:]+') \ (mag)$' ,fontsize=14)
-    #pl.ylabel(r'$(B-V) \ (mag)$' ,fontsize=14)
+    #pl.xlabel(r'$Projected \ Distance \ (kpc)$',fontsize=14)
+    #pl.ylabel(r'$\Delta \mu \ ('+path[j][-1:]+') \ (mag)$' ,fontsize=14)
+    pl.ylabel(r'$Number$',fontsize=12)
 
-    pl.tick_params(axis='both', labelsize=14)
+    pl.tick_params(axis='both', labelsize=12)
     #pl.ylim(-1.5,1.5),pl.xlim(0,60)
     #pl.axvline(10,c='k',ls='--',lw=2)
     
 pl.tight_layout()
-pl.savefig('../../plots/mu_sep.pdf',bbox_inches='tight', dpi=100)
+#pl.savefig('../../plots/mu_sep.pdf',bbox_inches='tight', dpi=100)
+pl.savefig('../../plots/bv_dist.pdf',bbox_inches='tight', dpi=100)
 
 #pl.show()
 

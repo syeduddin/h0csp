@@ -25,37 +25,37 @@ def distmod(h,z1,z2):
     t3 = 1 + (((1-q)/2)*z2)
     return (5*np.log10(t1*t2*t3)) +25
 
-H = ascii.read('../../data/working/H_sbfcombined.csv')
+tab = ascii.read('../../data/working/Allbands_ceph.csv')
+
 
 filter = ['u','B','g','V','r','i','Y','J','H']
+suffix = ['1','2','3','4','5','2a','3a','4a','5a']
 #filter='B'
 for i in range(len(filter)):
-    data =  ascii.read('../../data/working/'+filter[i]+'_sbfcombined.csv')
-    tab = join(H,data,keys='sn')
     print (filter[i])
 
-    w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao'))
+    w = np.where((tab['sn_1']!='CSP14abk') &  (tab['sn_1']!='PTF13dyt') &  (tab['sn_1']!='PTF13dym') &  (tab['sn_1']!='PS1-13eao'))
     
     #w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')& (tab['zcmb_2']>0.01) &(tab['dist_2']<0)  & (tab['t0_2']<5) & (tab['st_2']> 0.5) & (tab['BV_2']<0.5))
 
-    st = tab['st_2'][w]
-    est = tab['est_2'][w]
-    zhel = tab['zhel_2'][w]
-    zcmb = tab['zcmb_2'][w]
-    mmax = tab['Mmax_2'][w]
-    emmax = tab['eMmax_2'][w]
-    bv = tab['BV_2'][w]
-    ebv = tab['eBV_2'][w]
-    m_csp = tab['m_2'][w]
-    dist = tab['dist_2'][w]
-    edist = tab['edist_2'][w]
-    c_ms = tab['covMs_2'][w]
-    c_mbv = tab['covBV_M_2'][w]
-    sn = tab['sn'][w]
+    st = tab['st_'+suffix[i]][w]
+    est = tab['est_'+suffix[i]][w]
+    zhel = tab['zhel_'+suffix[i]][w]
+    zcmb = tab['zcmb_'+suffix[i]][w]
+    mmax = tab['Mmax_'+suffix[i]][w]
+    emmax = tab['eMmax_'+suffix[i]][w]
+    bv = tab['BV_'+suffix[i]][w]
+    ebv = tab['eBV_'+suffix[i]][w]
+    m_csp = tab['m_'+suffix[i]][w]
+    dist = tab['dist_'+suffix[i]][w]
+    edist = tab['edist_'+suffix[i]][w]
+    c_ms = tab['covMs_'+suffix[i]][w]
+    c_mbv = tab['covBV_M_'+suffix[i]][w]
+    sn = tab['sn_'+suffix[i]][w]
     print (len(sn))
-    Ho_dists = tab['dist_2'][w] < 0
+    Ho_dists = tab['dist_'+suffix[i]][w] < 0
     #Ho_dists = tab['dist_2'] > 0
-   
+    #sys.exit()
     
     #initial guess
     plim=-19.3, -19.2
@@ -145,7 +145,7 @@ for i in range(len(filter)):
 
 
 
-    f1 =open('../../results/TRGB_result_'+filter[i]+'.txt','w')
+    f1 =open('../../results/Ceph_result_'+filter[i]+'.txt','w')
     f1.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%('p0','p1','p2','beta','alpha','sig_int','vel','H0'))
 
     f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]))
@@ -157,9 +157,9 @@ for i in range(len(filter)):
 
 
     print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
-sys.exit()
+#sys.exit()
 # Triangle plot
-figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
+#figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
 
 #figure.savefig("../plots/mcmcH0_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 

@@ -12,7 +12,7 @@ tab1 = ascii.read('../../data/lc/'+filter+'_max.csv')
 tab1.rename_column('name','sn')      # for consistency
 tab1.remove_column('dist')           # avoid collision
 tab2 = ascii.read('../../data/hosts/CSPHostMass.csv')
-tab3 = ascii.read('../../data/calibrators/calibrators_sbf_final.csv')
+tab3 = ascii.read('../../data/calibrators/calibrators_trgb.csv')
 
 # tab3 has no 'sn1' so just copy 'sn'
 tab3['sn1'] = tab3['sn']
@@ -48,5 +48,5 @@ print (len(newt1['dist'][w]))
 #sys.exit()
 
 
-newt1.write('../../data/working/'+filter+'_sbf.csv', format='ascii.csv', delimiter=',',overwrite=True)
+newt1.write('../../data/working/'+filter+'_trgb.csv', format='ascii.csv', delimiter=',',overwrite=True)
 #newt.write('test.csv', format='ascii.csv', delimiter=' ')

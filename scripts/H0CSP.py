@@ -24,15 +24,17 @@ q=-0.53
 
 tab = ascii.read('../data/working/'+file)
 
-
-
 # Excluding peculiar events
-w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='1981B') & (tab['sn']!='SN2012fr') & (tab['sn']!='LSQ14fmg'))
+#w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg'))
 
-# Excluding 91T and 91bg
-#w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-91T')& (tab['subtype']!='Ia-91bg'))
+# (tab['sn']!='1981B') & (tab['sn']!='SN2012fr') &
 
-# LC anf host
+#Excluding 91T and 91bg
+w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')  & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx')& (tab['subtype']!='Ia-91T')& (tab['subtype']!='Ia-91bg'))
+
+f1 =open('../results/'+file[:-4]+'_result91.txt','w') # check file name
+
+# LC and host
 st = tab['st'][w]
 est = tab['est'][w]
 zhel = tab['zhel'][w]
@@ -58,15 +60,12 @@ for n,i in enumerate(em):
         if i==0.0: em[n]=0.005 # avoiding error =0.0
 
 
-
-
 Ho_dists = (dist < 0)
 #Ho_dists = (cal =='s')
 #print (file, len(st), len(st[Ho_dists]))
-
 ss= np.where(dist>0)
 print (file, len(st[ss]))
-f1 =open('../results/'+file[:-4]+'_result.txt','w')
+
 
 
 
@@ -95,7 +94,7 @@ def like(par):
         
 
         
-        mu_obs = mmax - p - p1*(st - 1.) -  p2*(st - 1.)**2 - rv*bv- alpha*(m_csp-np.median(m_csp)) # slope
+        mu_obs = mmax - p - (p1*(st - 1.)) -  (p2*(st - 1.)**2) - (rv*bv)- (alpha*(m_csp-np.median(m_csp))) # slope
         #mu_obs = mmax - p - p1*(st - 1.) -  p2*(st - 1.)**2 - rv*bv - (alpha*m_csp) # step 
 
 
@@ -159,7 +158,7 @@ for j in range(ndim):
 
 axes[-1].set_xlabel("step number")
 
-fig.savefig("../plots/steps_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+#fig.savefig("../plots/steps_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
 
@@ -201,7 +200,7 @@ print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 # Triangle plot
 figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
 
-figure.savefig("../plots/mcmcH0_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+#figure.savefig("../plots/mcmcH0_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 
 
@@ -214,7 +213,6 @@ print("Serial took {0:.1f} minutes".format(serial_time/60.))
 #os.system('say "your program has finished."')
 
     
-
 
 
 

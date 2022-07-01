@@ -42,20 +42,20 @@ c_mbv = tab['covBV_M']
 
 
 #All cuts
-#w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['zcmb']>0.01) & (tab['dist']<0) & (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5))
+w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['zcmb']>0.01) & (tab['dist']<0) & (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5))
 
 # single cut
-w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['zcmb']>0.02)) 
+#w0 =np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='LSQ14fmg')& (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['t0']<5)) 
 
-f1 =open('../results/'+file[:-4]+'_results_z02.txt','w') ### MUST change !!
+f1 =open('../results/'+file[:-4]+'_results_all.txt','w') ### MUST change !!
 print (f1)
 
 
-w = dist>0
+w1 =dist>0
 
-print (type(w))
-w1 = random.choice(w,5)
-print (w1)
+#print (type(w))
+#w1 = random.choice(w,5)
+#print (w1)
 
 print (file, len(st[w0]),len(st[w1]))
 

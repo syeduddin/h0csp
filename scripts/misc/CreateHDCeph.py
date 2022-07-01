@@ -32,7 +32,7 @@ filter = ['u','B','g','V','r','i','Y','J','H']
 for i in range(len(filter)):
     
     result = ascii.read('../../results/'+filter[i]+'_ceph_result.txt')
-    #result = ascii.read('../../results/B_ceph_result.txt')
+    #result = ascii.read('../../results/B_trgb_result.txt')
     p0=result['p0'][0]
     ep0 = (result['p0'][1]+result['p0'][2])/2
     p1=result['p1'][0]
@@ -49,7 +49,7 @@ for i in range(len(filter)):
     h0=result['H0'][0]
     eh0 = (result['H0'][1]+result['H0'][2])/2
 
-    ep2=ep2/10.
+    #ep2=ep2/10.
     
     
     tab = ascii.read('../../data/working/'+filter[i]+'_ceph.csv')
@@ -87,6 +87,7 @@ for i in range(len(filter)):
     red = beta*(bv)
     
     mu_obs = mmax - p0 - st1 - st2 - red - alpha*(m_csp-np.median(m_csp)) 
+    absmag = p0 + st1 + st2 + red + alpha*(m_csp-np.median(m_csp)) 
 
 
     mu_model = np.where(Ho_dist,distmod(h0,zhel,zcmb), dist)
@@ -175,7 +176,7 @@ for i in range(len(filter)):
     #pl.axhline(-sig[i],color='g')
     #pl.savefig('plots/hd_burns.pdf')
 pl.tight_layout()
-pl.savefig('../../plots/hd_ceph.pdf')
+pl.savefig('../../plots/hd_trgb.pdf')
 #pl.show()
 
 
