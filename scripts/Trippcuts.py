@@ -45,9 +45,10 @@ c_mbv = tab['covBV_M']
 #w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['zcmb']>0.01) & (tab['dist']<0) & (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5) & (tab['m']>9.0))
 
 # single cut
-w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['sample']=='CSPI')) 
+#w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['sample']=='CSPI')) 
 
-f1 =open('../results/'+file[:-4]+'_results_tripp_csp1.txt','w') ### MUST change !!
+w0 = ((tab['dist']<0) &(tab['sample']=='CSPI'))
+f1 =open('../results/'+file[:-4]+'_results_tripp_v2csp1.txt','w') ### MUST change !!
 print (f1)
 
 
@@ -211,7 +212,7 @@ print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0]],show_titles=True)
 
 
-figure.savefig("../../plots/mcmcH0_tripp"+file[:-4]+"_"+".pdf")
+figure.savefig("../plots/mcmcH0_v2tripp"+file[:-4]+"_"+".pdf")
 
 
 

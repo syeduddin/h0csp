@@ -39,25 +39,29 @@ dist = tab['dist']
 edist = tab['edist']
 c_ms = tab['covMs']
 c_mbv = tab['covBV_M']
-
+sn = tab['sn']
 
 #All cuts
-w0 = ((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')&  (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['zcmb']>0.01) & (tab['dist']<0) & (tab['t0']<5) & (tab['st']> 0.5) & (tab['BV']<0.5))
+w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') & (tab['dist']<0) & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5))
 
-# single cut
-#w0 =np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='LSQ14fmg')& (tab['sn']!='PS1-13eao')&  (tab['dist']<0) & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') &(tab['t0']<5)) 
 
-f1 =open('../results/'+file[:-4]+'_results_all.txt','w') ### MUST change !!
+f1 =open('../results/'+file[:-4]+'_resultallcut.txt','w') ### MUST change !!
 print (f1)
 
+#& (tab['BV']<0.1) &(tab['sample']=='CSPII' & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5)
 
-w1 =dist>0
+
+w1 =tab['dist']>0
+
+
 
 #print (type(w))
 #w1 = random.choice(w,5)
 #print (w1)
 
-print (file, len(st[w0]),len(st[w1]))
+print (len(st[w0]),len(st[w1]))
+
+
 
 
 
@@ -130,7 +134,7 @@ def like(par):
 # EMCEE
 ndim, nwalkers = 8, 80
 ssize=1000
-burnin = 200
+burnin = 500
 
 
 p00 = np.random.rand(nwalkers) * (plim[1] - plim[0]) + plim[0]

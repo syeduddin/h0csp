@@ -27,7 +27,8 @@ tab = ascii.read('../data/working/'+file)
 
 
 # Excluding peculiar events
-w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='1981B') & (tab['sn']!='SN2012fr') & (tab['sn']!='1991T') & (tab['sn']!='LSQ14fmg'))
+w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
+
 
 # Excluding 91T and 91bg
 #w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-91T')& (tab['subtype']!='Ia-91bg'))
@@ -60,7 +61,7 @@ Ho_dists = (dist < 0)
 
 ss= np.where(dist>0)
 print (file, len(st[ss]))
-f1 =open('../results/'+file[:-4]+'_result_nohm.txt','w')
+f1 =open('../results/'+file[:-4]+'_resultnohm.txt','w')
 #sys.exit()
 
 
@@ -109,8 +110,8 @@ def like(par):
         return -np.inf
 # EMCEE
 ndim, nwalkers = 7, 70
-ssize=1000
-burnin = 200
+ssize=3000
+burnin = 500
 
 
 p00 = np.random.rand(nwalkers) * (plim[1] - plim[0]) + plim[0]
@@ -148,7 +149,7 @@ for j in range(ndim):
 
 axes[-1].set_xlabel("step number")
 
-fig.savefig("../plots/steps_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+#fig.savefig("../plots/steps_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
 
@@ -189,7 +190,7 @@ print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 # Triangle plot
 figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
 
-figure.savefig("../plots/mcmcH0_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+#figure.savefig("../plots/mcmcH0_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 
 

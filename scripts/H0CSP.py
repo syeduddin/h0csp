@@ -9,7 +9,7 @@ from multiprocessing import cpu_count
 import time
 from astropy.io import ascii
 import corner
-
+from collections import Counter
 
 #file = input("Please enter a file name from ../data/working/ :\n")
 
@@ -25,12 +25,24 @@ q=-0.53
 tab = ascii.read('../data/working/'+file)
 
 # Excluding peculiar events
-#w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg'))
+#w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
 
-# (tab['sn']!='1981B') & (tab['sn']!='SN2012fr') &
+
+
 
 #Excluding 91T and 91bg
-w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao')  & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx')& (tab['subtype']!='Ia-91T')& (tab['subtype']!='Ia-91bg'))
+w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae')& (tab['subtype']!='Ia-91T')& (tab['subtype']!='Ia-91bg')& (tab['subtype']!='Ia-86G')& (tab['subtype']!='Ia-06gz') & (tab['sn']!='SN2011iy'))
+
+
+
+
+#99aa=list(('ASAS14hp', 'ASAS14lt', 'ASAS14me',' ASAS15as', 'LSQ12hnr', 'LSQ12hvj', 'LSQ12hzj', 'LSQ15aae', 'LSQ15agh', 'PS15sv', 'SN2012G', 'SN2013ad', 'SN2013hh'))
+
+
+# New Test criteria 
+#w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae')& (tab['subtype']!='Ia-91T')& (tab['subtype']!='Ia-91bg')& (tab['subtype']!='Ia-86G')& (tab['subtype']!='Ia-06gz') & (tab['sn']!='ASAS14hp') & (tab['sn']!='ASAS14lt')& (tab['sn']!='ASAS14me')& (tab['sn']!='ASAS15as')& (tab['sn']!='LSQ12hrn')& (tab['sn']!='LSQ12hvj')& (tab['sn']!='LSQ12hzj')& (tab['sn']!='LSQ15aae')& (tab['sn']!='LSQ15agh')& (tab['sn']!='PS15sv')& (tab['sn']!='SN2012G')& (tab['sn']!='SN2013ad')& (tab['sn']!='SN2013hh'))
+
+
 
 f1 =open('../results/'+file[:-4]+'_result91.txt','w') # check file name
 
@@ -61,11 +73,8 @@ for n,i in enumerate(em):
 
 
 Ho_dists = (dist < 0)
-#Ho_dists = (cal =='s')
-#print (file, len(st), len(st[Ho_dists]))
 ss= np.where(dist>0)
-print (file, len(st[ss]))
-
+print (file, len(st),len(st[Ho_dists]), len(st[ss]))
 
 
 
@@ -102,6 +111,8 @@ def like(par):
 
         fac= (p1+(2*p2*st))
         velterm = (2.17*vel)**2/(c*zcmb)**2
+
+            
         err = (fac*est)**2 +emmax**2 +(rv*ebv)**2+2*fac*c_ms+rv*c_mbv+sig**2+(0.00000723*vel/zcmb)**2 +(alpha*em)**2
         err1 = ((fac*est)**2) +(emmax**2) +((rv*ebv)**2)+(2*fac*c_ms)+(rv*c_mbv)+(edist**2)+(alpha*em)**2#
     
@@ -118,7 +129,7 @@ def like(par):
 # EMCEE
 ndim, nwalkers = 8, 80
 ssize=1000
-burnin = 200
+burnin = 500
 
 
 p00 = np.random.rand(nwalkers) * (plim[1] - plim[0]) + plim[0]
@@ -158,7 +169,7 @@ for j in range(ndim):
 
 axes[-1].set_xlabel("step number")
 
-#fig.savefig("../plots/steps_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+#fig.savefig("/Users/suddin/Science/SNeSurveys/CSP/mcmcplots/steps91_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 samples = sampler.chain[:, burnin:, :].reshape((-1, ndim))
 
@@ -184,7 +195,6 @@ print("""MCMC result:
 """.format(p0_mcmc, p1_mcmc, p2_mcmc,rv_mcmc,alpha_mcmc,sig_mcmc,vel_mcmc, H0_mcmc))
 
 
-
 f1.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n'%('p0','p1','p2','beta','alpha','sig_int','vel','H0'))
 
 f1.write('%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\n'%(p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]))
@@ -197,10 +207,13 @@ f1.close()
 
 print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
+sys.exit()
+
+
 # Triangle plot
 figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
 
-#figure.savefig("../plots/mcmcH0_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+figure.savefig("/Users/suddin/Science/SNeSurveys/CSP/mcmcplots/mcmcH0_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 
 

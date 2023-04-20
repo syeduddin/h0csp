@@ -3,11 +3,13 @@ from astropy.io import ascii
 import sys
 import numpy as np
 filter = sys.argv[1]
-tab1 = ascii.read('data/CSPI+II_max/'+filter+'_max.dat')
-tab1.rename_column('name','sn')      # for consistency
+#tab1 = ascii.read('data/CSPI+II_max/'+filter+'_max.dat')
+tab1 = ascii.read('../../data/working/'+filter+'_ceph_update2.csv')
+
+#tab1.rename_column('name','sn')      # for consistency
 tab1.remove_column('dist')           # avoid collision
-tab2 = ascii.read('data/CSPHostMass.csv')
-tab3 = ascii.read('data/calibrators_all.csv')
+tab2 = ascii.read('../../data/hosts/CSPHostMass.csv')
+tab3 = ascii.read('../../data/calibrators/calibrators_all.csv')
 
 # tab3 has no 'sn1' so just copy 'sn'
 tab3['sn1'] = tab3['sn']
@@ -48,5 +50,5 @@ newt2 = unique(bigt[w2], keys='sn')
 
 newt = vstack([newt0,newt1,newt2])
 
-newt.write('data/'+filter+'_all.dat', format='ascii.fixed_width', delimiter=' ',overwrite=True)
+newt.write('data/'+filter+'_all_update2.dat', format='ascii.fixed_width', delimiter=' ',overwrite=True)
 #newt.write('test.csv', format='ascii.csv', delimiter=' ')

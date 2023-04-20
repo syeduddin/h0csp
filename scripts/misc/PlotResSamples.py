@@ -22,11 +22,10 @@ def distmod(h,z1,z2):
 #pl.figure(figsize=(20,10))
 band=sys.argv[1]
 
-#file=['../../results/'+band+'_trgb_result_z01.txt','../../results/'+band+'_trgb_results_csp1z01.txt','../../results/'+band+'_trgb_results_csp2z01.txt']
-file =[ '../../results/'+band+'_ceph_result.txt']
+file=['../../results/'+band+'_trgb_resultcsp1.txt','../../results/'+band+'_trgb_resultcsp2.txt']
 
-lab = ['Full','CSPI','CSPII']
-lab1 = ['Full_TRGB','CSPI_TRGB','CSPII_TRGB']
+lab = ['CSPI','CSPII']
+lab1 = ['CSPI','CSPII']
 
 for i in range(len(file)):
     print (file[i])
@@ -47,15 +46,16 @@ for i in range(len(file)):
     h0=result['H0'][0]
     eh0 = (result['H0'][1]+result['H0'][2])/2
 
-    #p2=.38
+
     
     
     tab = ascii.read('../../data/working/'+band+'_trgb.csv')
     #w= np.where((tab['subtype']!='Ia-91T') & (tab['subtype']!='Ia-91bg') & (tab['caltype']=='none')& (tab['sample']!='bla'))
    
-    w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx')& (tab['sample']!=lab[i]) & (tab['zcmb']>0.01))
+   # Excluding peculiar events
+    w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
 
-
+    #  
     st = tab['st'][w]
     est = tab['est'][w]
     zhel = tab['zhel'][w]
@@ -64,6 +64,7 @@ for i in range(len(file)):
     emmax = tab['eMmax'][w]
     bv = tab['BV'][w]
     ebv = tab['eBV'][w]
+    ebvmw = tab['EBVmw'][w]
     m_csp = tab['m'][w]
     ml = tab['ml'][w]
     mu = tab['mu'][w]
@@ -82,13 +83,13 @@ for i in range(len(file)):
     Ho_dist = tab['dist'][w]<0
 
     st1 = p1*(st - 1)
-    st2 = p2*(st - 1)**2
+    st2 = p2*((st - 1))**2
     red = beta*(bv)
     
     mu_obs = mmax - p0 - st1 - st2 - red - alpha*(m_csp-np.median(m_csp)) 
-    absmag = p0 + st1 + st2 #+ red #+ alpha*(m_csp-np.median(m_csp)) 
+    absmag = p0 + st1 + st2 + red + alpha*(m_csp-np.median(m_csp)) 
 
-    mu_model = np.where(Ho_dist,distmod(72.0,zhel,zcmb), dist)
+    mu_model = np.where(Ho_dist,distmod(h0,zhel,zcmb), dist)
     #mu_model = 5.0*np.log10(c*zcmb/h0) + 25.0
     
     yval = mmax - red - p0-st1-st2- alpha*(m_csp-np.median(m_csp))-mu_model
@@ -114,24 +115,24 @@ for i in range(len(file)):
     #pl.subplot(1,2,i+1)
    
     #pl.grid()
-    w1 = np.where(dist>0)
-    pl.hist(yval,histtype='step',lw=2,label=lab[i],bins=20)
-    #pl.hist(yval[w1],histtype='step',lw=2,label=lab1[i],ls='--',bins=20)
+    w1 = np.where((dist<0) & (zcmb>0.01) & (st>.5) & (bv<.5))
+    #pl.hist(dmu,histtype='step',lw=2,label=lab[i],bins=20)
+    pl.hist(absmag[w1],histtype='step',lw=2,label=lab1[i],bins=20)
 
    
     #pl.ylim(-1.5,1.5),pl.xlim(0.0,0.15)
-    pl.legend(numpoints =1,fontsize=12,loc='upper left')
+    pl.legend(numpoints =1,fontsize=12,loc='upper right')
     #pl.ylabel(r'$p0+p1*(s_{BV}-1)+p2*(s_{BV}-1)^2$' ,fontsize=12)
     #pl.label(r'$m-\beta(B-V)-\alpha M-p0-\mu$',fontsize=18)
-    pl.xlabel(band+'_residuals (mag)' ,fontsize=14)
+    pl.xlabel(band+'_M (mag)' ,fontsize=14)
     #pl.axhline(sig[i],color='g')
     #pl.axhline(-sig[i],color='g')
     #pl.savefig('plots/hd_burns.pdf')
 
 
-pl.axvline(0,color='k',lw=3)
+#pl.axvline(0,color='k',lw=3)
 pl.tight_layout()
-pl.savefig('../../plots/histres_'+band+'_ceph.pdf')
+pl.savefig('../../plots/histabsmag_'+band+'_trgb.pdf')
 #pl.show()
 
 

@@ -3,8 +3,8 @@ from scipy import stats
 import numpy as np
 
 x=np.linspace(50,90,1000)
-b=stats.norm.pdf(x, 71.49, 2.53) # B-band
-h=stats.norm.pdf(x, 73.23, 2.87) # H-band
+b=stats.norm.pdf(x, 71.43, 2.43) # B-band
+h=stats.norm.pdf(x, 72.65, 2.88) # H-band
 
 reiss = stats.norm.pdf(x, 73.04, 1.04)
 wendy = stats.norm.pdf(x, 69.80, 1.6)
@@ -49,7 +49,7 @@ pl.gca().add_artist(l1)
 
 
 
-pl.legend(['$71.49 \pm 0.54 \ (stat)  \pm 2.53 \ (sys)$','$73.23 \pm 0.77 \ (stat) \pm 2.87 \ (sys)$', '$73.04 \pm 1.01 \ (stat)  \pm 1.04 \ (sys)$','$69.80 \pm 0.60 \ (stat) \pm 1.60 \ (sys)$','$74.60 \pm 0.90 \ (stat) \pm 2.70 \ (sys)$', '$70.50 \pm 2.37 \ (stat) \pm 3.38 \ (sys)$','$67.40 \pm 0.50 \ (total)$' ],fontsize=18,loc ='upper left')
+pl.legend(['$71.43 \pm 0.62 \ (stat)  \pm 2.43 \ (sys)$','$72.65 \pm 0.63 \ (stat) \pm 2.88 \ (sys)$', '$73.04 \pm 1.01 \ (stat)  \pm 1.04 \ (sys)$','$69.80 \pm 0.60 \ (stat) \pm 1.60 \ (sys)$','$74.60 \pm 0.90 \ (stat) \pm 2.70 \ (sys)$', '$70.50 \pm 2.37 \ (stat) \pm 3.38 \ (sys)$','$67.40 \pm 0.50 \ (total)$' ],fontsize=18,loc ='upper left')
 
 
 

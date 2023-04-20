@@ -6,11 +6,12 @@ import numpy as np
 
 filter = sys.argv[1]
 tab1 = ascii.read('../../data/lc/'+filter+'_max.csv')
-
-
-
 tab1.rename_column('name','sn')      # for consistency
 tab1.remove_column('dist')           # avoid collision
+
+
+
+
 tab2 = ascii.read('../../data/hosts/CSPHostMass.csv')
 tab3 = ascii.read('../../data/calibrators/calibrators_trgb.csv')
 

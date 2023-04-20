@@ -26,16 +26,15 @@ q=-0.53
 
 
 #tab = ascii.read('../data/working/B_ceph.csv')
-tab = ascii.read('data/CSPI_Burns2018.dat')
+#tab = ascii.read('data/CSPI_Burns2018.dat')
 file = sys.argv[1]
-#tab = ascii.read('../../data/working/'+file)
+tab = ascii.read('../../data/working/'+file)
 
 w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='1981B') & (tab['sn']!='SN2012fr') & (tab['sn']!='LSQ14fmg'))
 
-#w = tab['caltype']!='none'
 
 
-f1 =open('../../results/'+file[:-4]+'_result_Trippcal_B18.txt','w')
+f1 =open('../../results/'+file[:-4]+'_result_v2Trippcsp1.txt','w')
 
 
 st = tab['st'][w]
@@ -89,7 +88,7 @@ def like(par):
     p,p1,p2,rv,alpha,sig,vel = par
     if  -25.0<p<-15.0  and -10.0<p1<10.0 and -10.0<p2<10.0 and 0.<rv<10.0 and -1.<alpha<1. and 0.<sig<1. and 0.<vel<1000.:
 
-        mu_obs = mmax - p - p1*(st - 1.) -  p2*(st - 1.)**2 - rv*bv - alpha*(m_csp-np.median(m_csp))
+        mu_obs = mmax - p - p1*(st - 1.) -  (p2*((st - 1.)**2)) - rv*bv - alpha*(m_csp-np.median(m_csp))
         #mu_obs = mmax - p - p1*(st - 1.) -  p2*(st - 1.)**2 - rv*bv - (alpha*m_csp) # slope 
 
 
@@ -191,7 +190,7 @@ f1.close()
 # Triangle plot
 figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", "$R_V$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0]],show_titles=True)
 
-#figure.savefig("../../plots/mcmcH0_allcal.pdf")
+figure.savefig("../../plots/mcmcH0_v2Trippcsp1_B.pdf")
 
 
 

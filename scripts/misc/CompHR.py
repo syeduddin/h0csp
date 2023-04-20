@@ -1,19 +1,38 @@
 from astropy.io import ascii
 from astropy.table import join
 import matplotlib.pylab as pl
-import os
+import os, sys
 import numpy as np
 
-t1 = ascii.read('../../results/Ceph_res_B.csv')
+t1 = ascii.read('../../results/Ceph_res_Y.csv')
 t2 = ascii.read('../../results/Ceph_res_J.csv')
-t3 = ascii.read('../../results/Ceph_res_r.csv')
+#t3 = ascii.read('../../results/Ceph_res_r.csv')
+t = join(t1,t2,keys='sn')
 
-t = join(t1,t3,keys='sn')
 
-pl.plot(t['res_1'],t['res_2'],'ko')
-pl.savefig('../../plots/compBr.pdf')
+b = t['res_1']
+eb = t['eres_1']
+h = t['res_2']
+eh = t['eres_2']
+bv = t['B-V_1']
+c1 = t['sample_1']
+c2 = t['sample_2']
 
+w = bv<0.5
+b = b[w]
+eb = eb[w]
+h =h[w]
+eh =eh[w]
+c1=c1[w]
+c2=c2[w]
+
+
+pl.plot(b,h-b,'ko')
+pl.ylabel('HR(B)-HR(V)'), pl.xlabel('HR(B)')
+
+pl.savefig('../../plots/compBV.pdf')
 sys.exit()
+
 
 pl.subplot(2,2,1)
 pl.plot(t1['B-V'],t1['res'],'ko',alpha=.3)

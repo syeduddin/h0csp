@@ -23,7 +23,7 @@ path = ['u','B','g','V','r','i','Y','J','H']
 pl.figure(figsize=(20,10))
 #plot all residuals
 for j in range(len(path)):
-    data = ascii.read(indir+'/Ceph_res_'+path[j]+'.csv')
+    data = ascii.read(indir+'/Ceph_res_'+path[j]+'_update2.csv')
    
   
     df3 = join(csp,data,keys='sn')
@@ -86,7 +86,7 @@ for j in range(len(path)):
     #pl.axvline(10,c='k',ls='--',lw=2)
     
 pl.tight_layout()
-pl.savefig('../../plots/cdfResAll.pdf',bbox_inches='tight', dpi=100)
+pl.savefig('../../plots/cdfResAll_update2.pdf',bbox_inches='tight', dpi=100)
 
 #pl.show()
 

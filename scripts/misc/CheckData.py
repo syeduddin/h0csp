@@ -1,22 +1,47 @@
 from astropy.io import ascii
 import numpy as np
+import matplotlib.pylab as pl
+import sys
+from astropy.table import join
+
+trgb = ascii.read('../../data/working/B_trgb.csv')
+ceph = ascii.read('../../data/working/B_ceph.csv')
+
+w1 = np.where(trgb['sample']=='CSPI')
+w2 = np.where(trgb['sample']=='CSPII')
+
+print (trgb.colnames)
+param = sys.argv[1]
+
+w = np.where ((trgb['dist']>0))
+
+pl.figure(1)
+pl.hist(trgb[param][w1],histtype='step',lw=2,label='CSPI')
+pl.hist(trgb[param][w2],histtype='step',lw=2,label='CSPII')
+#pl.hist(trgb[param][w],histtype='step',lw=2,label='TRGB')
+#pl.hist(ceph[param][w],histtype='step',lw=2,label='Ceph')
+
+pl.legend(loc='upper left')
+pl.savefig('../../plots/comp'+param+'.pdf')
 
 
 
-sbf = ascii.read('data/final/B_sbf.dat')
-ceph = ascii.read('data/final/B_ceph.dat')
-trgb = ascii.read('data/final/B_trgb.dat')
+pl.figure(2)
 
-bla = ascii.read('data/final/calibrators_sbf.csv')
-ws = np.where(sbf['dist']>0)
-wc = np.where(ceph['dist']<0)
-wt = np.where(trgb['dist']<0)
+b = ascii.read('../../data/working/B_trgb.csv')
+h = ascii.read('../../data/working/H_trgb.csv')
 
-#print sbf['st']
+t = join(b,h,keys='sn')
+wb = np.where (b['dist']>0)
+wh = np.where ((h['dist']>0))
 
-#print (len(sbf['sn'][ws]),len(ceph['sn'][wc]),len(trgb['sn'][wt]))
+#wt = np.where ((t['dist_1']<0))
 
-print len((set(sbf['sn'][ws]).difference(ceph['sn'])))
-res = ascii.read('results/B_ceph_result.txt')
+print (h[param][wh])
 
-#print (res['p0'][0])
+pl.hist(b[param][wb],histtype='step',lw=2,label='B')
+pl.hist(h[param][wh],histtype='step',lw=2,label='H')
+pl.xlabel(param)
+pl.legend(loc='upper left')
+pl.savefig('../../plots/compBH'+param+'.pdf')
+

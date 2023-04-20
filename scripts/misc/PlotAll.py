@@ -3,8 +3,10 @@ from astropy.io import ascii
 import numpy as np
 from astropy.table import join
 import sys
-tab = ascii.read('../../data/lc/B_max.csv')
-tab1 = ascii.read('../../data/working/B_ceph.csv')
+
+#tab = ascii.read('../../data/lc/B_max.csv')
+
+tab1 = ascii.read('../../data/working/B_ceph_update2.csv')
 tab2 = ascii.read('../../data/working/B_trgb.csv')
 tab3 = ascii.read('../../data/working/B_sbfcombined.csv')
 

@@ -1,5 +1,5 @@
 from astropy.io import ascii
-import math
+import math, sys
 import numpy as np
 
 filter = ['u','B','g','V','r','i','Y','J','H']
@@ -7,12 +7,12 @@ filter = ['u','B','g','V','r','i','Y','J','H']
 
 h=[]
 eh=[]
-
+cal = sys.argv[1]
 for i in range(len(filter)):
     
     
-    result = ascii.read('../../results/'+filter[i]+'_sbfcombined_results_cut.txt')
-    #result = ascii.read('../../results/Ceph_result_novpec_'+filter[i]+'.txt')
+    result = ascii.read('../../results/'+filter[i]+'_'+cal+'_update2_result.txt')
+    
     #print (result)
     p0=result['p0'][0]
     ep0 = (result['p0'][1]+result['p0'][2])/2.
@@ -39,11 +39,11 @@ for i in range(len(filter)):
 
     h.append(h0)
     eh.append(eh0)
-    #print ('& $',filter[i],'$', '&', '%0.2f'%h0,'(%0.2f)'%eh0,'&','%0.2f'%sig, '(%s)'%esig[1][0:2],'&', '%d'%vel,'(%d)'%evel, '&','%0.2f'%p0,'(%s)'%ep0[1][0:2],'&','%0.2f'%p1,'(%s)'%ep1[1][0:2],'&','%0.2f'%p2,'(%s)'%ep2[1][0:2],'&','%0.2f'%alpha,'(%s)'%ealpha[1][0:2],'&','%0.2f'%beta,'(%s)'%ebeta[1][0:2])
+    #print ('& $',filter[i],'$', '&', '%0.2f'%h0,'(%0.2f)'%eh0,'&','%0.2f'%sig, '(%s)'%esig[1][0:2],'&', '%d'%vel,'(%d)'%evel, '&','%0.3f'%p0,'(%s)'%ep0[1][0:3],'&','%0.2f'%p1,'(%s)'%ep1[1][0:2],'&','%0.2f'%p2,'(%s)'%ep2[1][0:2],'&','%0.2f'%alpha,'(%s)'%ealpha[1][0:2],'&','%0.2f'%beta,'(%s)'%ebeta[1][0:2],'\\\\')
 
     #print (filter[i], '%0.2f'%h0, '(%0.2f)'%eh0)
-#print (np.std(h))
-#print (eh)
+print ((h))
+print (eh)
 #print (np.std([74.75,73.07,75.27,73.04,72.30,72.69,74.86,74.25,75.25]))
 
 
@@ -72,7 +72,7 @@ allH = [70.61,70.98,71.85,70.12,70.27]
 #print (np.std(allH))
 
 methodB = [73.07,69.76,72.62]
-print (np.std(methodB))
+#print (np.std(methodB))
 methodH = [75.25,71.83,69.13]
-print (np.std(methodH))
+#print (np.std(methodH))
 

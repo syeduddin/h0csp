@@ -26,9 +26,9 @@ def distmod(h,z1,z2):
 
 # Getting results
 pl.figure(figsize=(20,10))
-#filter = ['u','B','g','V','r','i','Y','J','H']
+filter = ['u','B','g','V','r','i','Y','J','H']
 
-filter=['B','H']
+#filter=['B','H']
 for i in range(len(filter)):
     
     result = ascii.read('../../results/'+filter[i]+'_trgb_result.txt')
@@ -48,14 +48,13 @@ for i in range(len(filter)):
     h0=result['H0'][0]
     eh0 = (result['H0'][1]+result['H0'][2])/2
 
-    #p2=.38
-    
     
     tab = ascii.read('../../data/working/'+filter[i]+'_trgb.csv')
-    #w= np.where((tab['subtype']!='Ia-91T') & (tab['subtype']!='Ia-91bg') & (tab['caltype']=='none')& (tab['sample']!='bla'))
+    
    
-    w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao'))
+    w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') )
 
+    
     st = tab['st'][w]
     est = tab['est'][w]
     zhel = tab['zhel'][w]
@@ -88,7 +87,7 @@ for i in range(len(filter)):
     mu_obs = mmax - p0 - st1 - st2 - red - alpha*(m_csp-np.median(m_csp)) 
     absmag = p0 + st1 + st2 #+ red #+ alpha*(m_csp-np.median(m_csp)) 
 
-    mu_model = np.where(Ho_dist,distmod(72.0,zhel,zcmb), dist)
+    mu_model = np.where(Ho_dist,distmod(h0,zhel,zcmb), dist)
 
     yval = mmax - red - p0- alpha*(m_csp-np.median(m_csp))-mu_model
     pval = st1 + st2
@@ -105,58 +104,38 @@ for i in range(len(filter)):
     err = np.where(Ho_dist,err1,err2)
     err = np.sqrt(err)
     dmu=mu_obs-mu_model
-    #w1 = np.where(np.abs(dmu)>1.)
 
-    rms=np.sqrt(np.sum(np.power(dmu,2))/len(dmu))
-    #err_int=(np.std(dmu)) - (np.mean(err))
-    #wt= np.sqrt(1/((ey**2)+(err_int**2))) # weights
-    #wt= 1/((err**2)+(err_int**2)) # weights
-
-    #mean= np.sum(dmu*wt)/np.sum(wt)
-    #error= np.sqrt((1/np.sum(wt)))
+    ww =np.where(dist>0)
     
-    #print (filter[i], '%0.3f'%mean,'%0.3f'%error, '%0.3f'%np.std(dmu), '%0.3f'%(np.std(dmu)/np.sqrt(len(dmu))))
-    #print (filter[i],'Full','%0.3f'%rms)
-    #sys.exit()
-    data=Table()
-    data['sn']=sn
-    data['res']=dmu
-    data['eres']=err
-    data['zcmb']=zcmb
-    data['st']=st
-    data['B-V']=bv
-    data['m'] =m_csp
-    data['ml'] =ml
-    data['mu'] =mu
-    data['sample']=sample
-    data['cal']=cal
+    wc= np.where(dmu<-1.5)
     
-    #ascii.write(data,'../../results/Ceph_res_'+filter[i]+'.csv',format='csv', delimiter=',',overwrite=True)
-    
-    pl.subplot(1,2,i+1)
+    pl.subplot(3,3,i+1)
    
-    pl.grid()
-    w1 = np.where(dist>0)
    
-    pl.plot(st,yval,'ko',label='$'+filter[i]+'$',alpha=.5,ms=10)
-    pl.plot(st[w1],yval[w1],'bo',ms=12,label='$TRGB \ cals$')
+    #pl.plot(st,yval,'ko',label='$'+filter[i]+'$',alpha=.5,ms=10)
+    #pl.plot(st[w1],yval[w1],'bo',ms=12,label='$TRGB \ cals$')
 
-    pl.plot(st,pval,'ks',lw=2,label='$p1*(s_{BV}-1)+p2*(s_{BV}-1)^2$')
+    pl.hist(dmu[ww],histtype='step',lw=2,label='$'+filter[i]+'$')
+    pl.axvline(0,color='k',lw=3)
+
+    #pl.plot(st,pval,'ks',lw=2,label='$p1*(s_{BV}-1)+p2*(s_{BV}-1)^2$')
     #pl.gca().invert_yaxis()
 
-    w2 = np.where(m_csp<9.0)
-    pl.plot(st[w2],yval[w2],'ro',ms=14,label='$logM<9.0\ SNe \ Ia$')
+    #w2 = np.where(m_csp<9.0)
+    #pl.plot(st[w2],yval[w2],'ro',ms=14,label='$logM<9.0\ SNe \ Ia$')
 
     #pl.ylim(-1.5,1.5),pl.xlim(0.0,0.15)
-    pl.legend(numpoints =1,fontsize=18,loc='lower left')
+    pl.legend(numpoints =1,fontsize=18,loc='upper left')
     #pl.ylabel(r'$p0+p1*(s_{BV}-1)+p2*(s_{BV}-1)^2$' ,fontsize=12)
-    pl.ylabel(r'$m-\beta(B-V)-\alpha M-p0-\mu$',fontsize=18)
-    pl.xlabel(r'$s_{BV}$' ,fontsize=18)
+    #pl.ylabel(r'$m-\beta(B-V)-\alpha M-p0-\mu$',fontsize=18)
+    #pl.xlabel(r'$s_{BV}$' ,fontsize=18)
     #pl.axhline(sig[i],color='g')
     #pl.axhline(-sig[i],color='g')
     #pl.savefig('plots/hd_burns.pdf')
 pl.tight_layout()
-pl.savefig('../../plots/st_absmag_trgb.pdf')
+#pl.savefig('../../plots/st_absmag_trgb.pdf')
+pl.savefig('../../plots/histres_calibs_trgb.pdf')
+
 #pl.show()
 
 

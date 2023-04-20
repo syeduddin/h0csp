@@ -28,10 +28,10 @@ def distmod(h,z1,z2):
 pl.figure(figsize=(20,10))
 filter = ['u','B','g','V','r','i','Y','J','H']
 
-#filter='B'
+#filter=['B','H']
 for i in range(len(filter)):
     
-    result = ascii.read('../../results/'+filter[i]+'_ceph_result.txt')
+    result = ascii.read('../../results/'+filter[i]+'_ceph_update2_result.txt')
     #result = ascii.read('../../results/B_trgb_result.txt')
     p0=result['p0'][0]
     ep0 = (result['p0'][1]+result['p0'][2])/2
@@ -52,10 +52,9 @@ for i in range(len(filter)):
     #ep2=ep2/10.
     
     
-    tab = ascii.read('../../data/working/'+filter[i]+'_ceph.csv')
-    #w= np.where((tab['subtype']!='Ia-91T') & (tab['subtype']!='Ia-91bg') & (tab['caltype']=='none')& (tab['sample']!='bla'))
+    tab = ascii.read('../../data/working/'+filter[i]+'_ceph_update2.csv')
    
-    w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao'))
+    w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
 
     st = tab['st'][w]
     est = tab['est'][w]
@@ -129,7 +128,8 @@ for i in range(len(filter)):
     data['sample']=sample
     data['cal']=cal
     
-    ascii.write(data,'../../results/Ceph_res_'+filter[i]+'.csv',format='csv', delimiter=',',overwrite=True)
+    ascii.write(data,'../../results/Ceph_res_'+filter[i]+'_update2.csv',format='csv', delimiter=',',overwrite=True)
+
     
     pl.subplot(3,3,i+1)
    
@@ -139,7 +139,9 @@ for i in range(len(filter)):
     pl.errorbar(zcmb,dmu,yerr=err,fmt='o',mfc='white',color='k',ms=12,label='$'+filter[i]+'$')
     wt= np.where((subtype=='Ia-91T'))
     wbg= np.where((subtype=='Ia-91bg'))
-   
+    print (filter[i])
+    print (np.mean(dmu))
+    print (np.mean(dmu[wt]))
     
     pl.errorbar(zcmb[wbg],dmu[wbg],yerr=err[wbg],fmt='s',color='#f781bf',ms=10,markeredgecolor='k')
     pl.errorbar(zcmb[wt],dmu[wt],yerr=err[wt],fmt='p',color='b',ms=12,markeredgecolor='k')
@@ -176,7 +178,7 @@ for i in range(len(filter)):
     #pl.axhline(-sig[i],color='g')
     #pl.savefig('plots/hd_burns.pdf')
 pl.tight_layout()
-pl.savefig('../../plots/hd_trgb.pdf')
+pl.savefig('../../plots/hd_ceph_update2.pdf')
 #pl.show()
 
 

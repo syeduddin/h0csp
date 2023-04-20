@@ -2,7 +2,7 @@ from astropy.io import ascii
 from astropy.table import join,vstack, Table, unique
 import numpy as np
 import sys
-import matplotlib.pylab as pl
+#import matplotlib.pylab as pl
 from scipy.stats import linregress
 from collections import Counter
 filter = sys.argv[1]
@@ -31,10 +31,10 @@ t3['mu'] = t1['mu']+t1['m']
 t =join(t1,t2,keys='sn')
 
 #pl.errorbar(t['BV_1'],t['BV_2'],xerr=t['eBV_1'],yerr=t['eBV_2'],color='r',fmt='o')
-pl.errorbar(t['Mmax_1'],t['Mmax_2'],xerr=t['eMmax_1'],yerr=t['eMmax_2'],color='r',fmt='o')
+#pl.errorbar(t['Mmax_1'],t['Mmax_2'],xerr=t['eMmax_1'],yerr=t['eMmax_2'],color='r',fmt='o')
 
-pl.xlabel('old'),pl.ylabel('new')
-pl.savefig('../../plots/compSBFBmax.pdf')
+#pl.xlabel('old'),pl.ylabel('new')
+#pl.savefig('../../plots/compSBFBmax.pdf')
 
 #print (np.mean(t['BV_1']-t['BV_2']))
 m, c, r_value, p_value, std_err = linregress(t['Mmax_1'],t['Mmax_2'])
@@ -76,7 +76,7 @@ table['host']=t['host']
 table['dist']=t['dist']
 table['edist']=t['edist']
 table['caltype']='s'
-print (table)
+#print (table)
 
 w = np.where(t4['caltype']!='c')
 

@@ -31,12 +31,12 @@ for j in range(len(filter)):
     
     
     
-    tab = ascii.read('../../results/Ceph_res_nohm'+filter[j]+'.csv')
+    tab = ascii.read('../../results/Ceph_res_'+filter[j]+'_update2.csv')
    
-    w =np.where((tab['sample']=='CSPI')& (tab['cal']=='none'))
-    #w = np.where(tab['cal']=='none')
+    w =np.where((tab['sample']=='CSPI')& (tab['zcmb']>0))
+    #w = np.where(tab['zcmb']>0)
     mass = tab['m'][w]
-    print len(tab['sn'])
+    #print len(tab['sn'])
     
     
     ml =  tab['m'][w]-tab['ml'][w]
@@ -77,6 +77,7 @@ for j in range(len(filter)):
     esl.append('%6.3f'%np.std(lm.chain['beta']))
 
 
+
     #print '& $',filter[j],'$', '&%.3f'%np.mean(lm.chain['beta']),'(%.3f)'%(np.std(lm.chain['beta'])),'&', '%.3f'%(mean_x1_high-mean_x1_low), '(%.3f)'%(np.sqrt((error_x1_low**2)+(error_x1_high**2))),'&','%.2f'%np.median(mass),'\\\\' 
     #sys.exit()
     xl = np.array([5, 15])    
@@ -101,10 +102,10 @@ for j in range(len(filter)):
     #pl.legend()
 pl.tight_layout()
 
-pl.savefig('../../plots/AllMassCorrnoHM_csp1.pdf',bbox_inches='tight', dpi=100)
+#pl.savefig('../../plots/AllMassCorr_update2.pdf',bbox_inches='tight', dpi=100)
     
    
-
+#sys.exit()
 print ('slopes')
 print (', '.join(sl))
 print (', '.join(esl))
