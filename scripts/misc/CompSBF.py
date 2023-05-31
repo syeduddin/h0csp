@@ -21,20 +21,41 @@ range = [np.min(k['dist']),np.max(k['dist'])]
 pl.hist(j['dist'],histtype='stepfilled',bins=10,range=range,label='Jensen+21',color='r',alpha=.5)
 pl.hist(k['dist'],histtype='stepfilled',bins=10,range=range,label='Khetan+21',color='b',alpha=.5)
 pl.legend()
-pl.xlabel('$Distacne \ moduli \ (\mu)$',fontsize=14),pl.ylabel('$Number$',fontsize=14)
+pl.xlabel('$Distacne \ moduli \ (\mu)$ [mag]',fontsize=14),pl.ylabel('$Number$',fontsize=14)
 pl.grid()
 
-#pl.savefig('../../plots/compSBFdist.pdf')
+pl.savefig('../../plots/compSBFdist.pdf')
 t = join(j,k,keys='sn')
 
+err_int1 = np.std(t['dist_1']) - np.mean(t['edist_1'])
+err_int2 = np.std(t['dist_2']) - np.mean(t['edist_2'])
+
+wt1= np.sqrt(1/((t['edist_1']**2)+(err_int1**2))) # weights
+wt2= np.sqrt(1/((t['edist_2']**2)+(err_int2**2))) # weights
+
+
+mean1= np.sum(t['dist_1']*wt1)/np.sum(wt1)
+err1 = np.sqrt((1/np.sum(wt1)))
+
+mean2= np.sum(t['dist_2']*wt2)/np.sum(wt2)
+err2 = np.sqrt((1/np.sum(wt2)))
+
+
+print (mean1-mean2)
 print (np.mean(t['dist_1']-t['dist_2']))
 
-print (np.mean(t['BV_1']-t['BV_2']))
+#print (np.mean(t['BV_1']-t['BV_2']))
+print (np.mean(t['edist_1']-t['edist_2']))
 
-error=np.sqrt((t['edist_1'])**2+(t['edist_2'])**2)
-#print (np.mean(error)/np.sqrt(7.))
+print(np.sqrt((err1)**2+(err2)**2))
 
 sys.exit()
+
+
+
+
+
+
 
 
 pl.errorbar (t['dist_1'],t['dist_2'], xerr=t['edist_1'],yerr=t['edist_2'],fmt='ko',ms=8)

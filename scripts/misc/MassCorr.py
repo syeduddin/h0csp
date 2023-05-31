@@ -59,7 +59,7 @@ for j in range(len(filter)):
     
     # Low
     mean_x1_low= np.sum(res[wl]*wt[wl])/np.sum(wt[wl])
-    error_x1_low= np.sqrt((1/np.sum(wt[wl])))
+    error_x1_low= np.sqrt((1/np.sum(wt[wl]))
     
     #high
     

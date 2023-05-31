@@ -1,7 +1,7 @@
 from astropy.io import ascii
 from astropy.table import join,vstack,Table
 
-tab = ascii.read('../../data/working/B_ceph_update2.csv')
+tab = ascii.read('../../data/working/B_sbf_update2.csv')
 import numpy as np
 
 st = tab['st']
@@ -22,18 +22,17 @@ sn = tab['sn']
 w = np.where(dist>1.0)
 
 data = Table()
-
 data['$Name$']=sn[w]
-data['$z_{cmb}$']=zcmb[w]
-data['$z_{zhel}$']=zhel[w]
-data['$B_{max}$']=mmax[w]
-data['$eB_{max}$']=emmax[w]
+data['$z_{cmb}$']=zcmb[w].round(4)
+data['$z_{zhel}$']=zhel[w].round(5)
+data['$B_{max}$']=mmax[w].round(5)
+data['$eB_{max}$']=emmax[w].round(5)
 data['$s_{BV}$']=st[w]
-data['$es_{BV}$']=est[w]
-data['$B-V$']=bv[w]
-data['$eB-V$']=ebv[w]
-data['$cov_{ms}$'] =c_ms[w]
-data['$cov_{mbv}$'] =c_mbv[w]
+data['$es_{BV}$']=est[w].round(5)
+data['$B-V$']=bv[w].round(5)
+data['$eB-V$']=ebv[w].round(5)
+data['$cov_{ms}$'] =c_ms[w].round(5)
+data['$cov_{mbv}$'] =c_mbv[w].round(5)
 data['$M_{host}$']=m_csp[w]
 #data['$Sample$']=tab['sample'][w]
 #data['$Subclass$']=tab['subtype'][w]
@@ -42,4 +41,4 @@ data['$eDistant$']= edist[w]
 
 
 print (data)
-ascii.write(data,'../../results/B_ceph_update2.txt',format='latex',overwrite=True)
+ascii.write(data,'../../results/B_sbfk21cal_update2.txt',format='latex',overwrite=True,)

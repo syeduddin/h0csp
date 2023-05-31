@@ -44,7 +44,7 @@ pl.xlabel(r'$H_0 \ (km \ s^{-1} \ Mpc^{-1})$',fontsize=20), pl.ylabel(r' $Normal
 pl.grid(True,alpha=.5)
 pl.legend(['$This \ Work \ (B)$','$This \ Work \ (H)$','$Riess \ et \ al. \ (2021)$', '$Freedman \ et \ al. \ (2021)$','$Garnavich \ et \ al. \ (2022)$', '$Khetan \ et \ al. \ (2021)$', '$Plank Collaboraion \ et \ al. \ (2018)$'],fontsize=18,loc ='upper right')
 
-l1 = pl.legend(['$This \ Work \ (B)$','$This \ Work \ (H)$','$Riess \ et \ al. \ (2021)$', '$Freedman \ et \ al. \ (2021)$','$Garnavich \ et \ al. \ (2022)$', '$Khetan \ et \ al. \ (2021)$', '$Plank \ Collaboraion \ et \ al. \ (2018)$'],fontsize=18,loc ='upper right')
+l1 = pl.legend(['$This \ Work \ (B)$','$This \ Work \ (H)$','$Riess \ et \ al. \ (2021)$', '$Freedman \ et \ al. \ (2021)$','$Garnavich \ et \ al. \ (2022)$', '$Khetan \ et \ al. \ (2021)$', '$Plank \ Collaboration \ et \ al. \ (2018)$'],fontsize=18,loc ='upper right')
 pl.gca().add_artist(l1)
 
 

@@ -11,7 +11,7 @@ cal = sys.argv[1]
 for i in range(len(filter)):
     
     
-    result = ascii.read('../../results/'+filter[i]+'_'+cal+'_update2_result.txt')
+    result = ascii.read('../../results/'+filter[i]+'_'+cal+'_update2_result_fixedvpec.txt')
     
     #print (result)
     p0=result['p0'][0]
@@ -31,14 +31,14 @@ for i in range(len(filter)):
     ebeta = str(ebeta).split('.')
     sig=result['sig_int'][0]
     esig = (result['sig_int'][1]+result['sig_int'][2])/2.
-    esig = str(esig).split('.')
-    vel=result['vel'][0]
-    evel = (result['vel'][1]+result['vel'][2])/2.
+    #esig = str(esig).split('.')
+    #vel=result['vel'][0]
+    #evel = (result['vel'][1]+result['vel'][2])/2.
     h0=result['H0'][0]
     eh0 = (result['H0'][1]+result['H0'][2])/2.
 
-    h.append(h0)
-    eh.append(eh0)
+    h.append(sig)
+    eh.append(esig)
     #print ('& $',filter[i],'$', '&', '%0.2f'%h0,'(%0.2f)'%eh0,'&','%0.2f'%sig, '(%s)'%esig[1][0:2],'&', '%d'%vel,'(%d)'%evel, '&','%0.3f'%p0,'(%s)'%ep0[1][0:3],'&','%0.2f'%p1,'(%s)'%ep1[1][0:2],'&','%0.2f'%p2,'(%s)'%ep2[1][0:2],'&','%0.2f'%alpha,'(%s)'%ealpha[1][0:2],'&','%0.2f'%beta,'(%s)'%ebeta[1][0:2],'\\\\')
 
     #print (filter[i], '%0.2f'%h0, '(%0.2f)'%eh0)

@@ -27,7 +27,7 @@ tab = ascii.read('../data/working/'+file)
 
 
 # Excluding peculiar events
-w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='1981B') & (tab['sn']!='SN2012fr') & (tab['sn']!='LSQ14fmg'))
+w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
 
 #Excluding 91T and 91bg
 #w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') &  (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-91T')& (tab['subtype']!='Ia-91bg'))
@@ -64,14 +64,13 @@ for n,i in enumerate(em):
 
 
 
-Ho_dists = (dist < 0)
+Ho_dists = (dist < 0) & (zcmb>0.01)
+
 #Ho_dists = (cal =='s')
 #print (file, len(st), len(st[Ho_dists]))
 
 ss= np.where(dist>0)
-print (file, len(st[ss]))
-
-
+print (file, len(st[Ho_dists]))
 
 
 #initial guess
@@ -105,9 +104,14 @@ def like(par):
         mu_model = np.where(Ho_dists, distmod(h0,zhel,zcmb), dist)
 
         fac= (p1+(2*p2*st))
-        vel = 451.0
-        velterm = (2.17*vel)**2/(c*zcmb)**2
+
+        vel = 187.0
+        
+        
+        #velterm = (2.17*vel)**2/(c*zcmb)**2
         err = (fac*est)**2 +emmax**2 +(rv*ebv)**2+2*fac*c_ms+rv*c_mbv+sig**2+(0.00000723*vel/zcmb)**2 +(alpha*em)**2
+
+            
         err1 = ((fac*est)**2) +(emmax**2) +((rv*ebv)**2)+(2*fac*c_ms)+(rv*c_mbv)+(edist**2)+(alpha*em)**2#
     
         mu_stat = np.where(Ho_dists,err,err1)

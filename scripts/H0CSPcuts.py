@@ -42,10 +42,10 @@ c_mbv = tab['covBV_M']
 sn = tab['sn']
 
 #All cuts
-w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') & (tab['dist']<0) & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5))
+w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') & (tab['dist']<0) &(tab['zcmb']>0.01))
 
 
-f1 =open('../results/'+file[:-4]+'_resultallcut.txt','w') ### MUST change !!
+f1 =open('../results/'+file[:-4]+'_result_novpec.txt','w') ### MUST change !!
 print (f1)
 
 #& (tab['BV']<0.1) &(tab['sample']=='CSPII' & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5)
@@ -90,7 +90,7 @@ def like(par):
     mu_model=[]
     mu_stat=[]
     
-    if  -25.0<p<14.0  and -10.0<p1<10.0 and -10.0<p2<10.0 and 0.<rv<10.0 and -1.<alpha<1. and 0.<sig<1. and 0.<vel<1000. and  0< h0 < 1000.0: # priors
+    if  -25.0<p<14.0  and -10.0<p1<10.0 and -10.0<p2<10.0 and 0.<rv<10.0 and -1.<alpha<1. and 0.<sig<1. and 0. <vel <1000.0 and  0< h0 < 1000.0: # priors
         
 
         
@@ -111,7 +111,8 @@ def like(par):
         
         fac= (p1+(2*p2*st[w0]))
         fac1= (p1+(2*p2*st[w1]))
-        velterm = (2.17*vel)**2/(c*zcmb)**2
+        
+        velterm = (2.17*437.0)**2/(c*zcmb)**2
 
         err = (fac*est[w0])**2 +emmax[w0]**2 +(rv*ebv[w0])**2+2*fac*c_ms[w0]+rv*c_mbv[w0]+sig**2+(0.00000723*vel/zcmb[w0])**2+(alpha*em[w0])**2
         err1 = ((fac1*est[w1])**2) +(emmax[w1]**2) +((rv*ebv[w1])**2)+(2*fac1*c_ms[w1])+(rv*c_mbv[w1])+(edist[w1]**2)+(alpha*em[w1])**2

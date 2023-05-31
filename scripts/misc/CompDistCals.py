@@ -7,7 +7,7 @@ from astropy.table import join, hstack
 #tab0 = ascii.read('../../data/calibrators/calibrators_B_sbfj21.csv')
 tab1 = ascii.read('../../data/calibrators/calibrators_B_sbfcombined.csv')
 tab2 = ascii.read('../../data/calibrators/calibrators_trgb.csv')
-tab3 = ascii.read('../../data/calibrators/calibrators_cepheids.csv')
+tab3 = ascii.read('../../data/calibrators/calibrators_ceph.csv')
 
 
 t = join(tab2,tab3,keys='sn')
@@ -37,7 +37,7 @@ pl.hist(tab2['dist'],bins=10,range=[30,34],histtype='step',label='TRGB',color='r
 pl.hist(tab1['dist'],bins=10,range=[30,34],histtype='stepfilled',label='SBF',color='k',lw=2, alpha=.3)
 #pl.hist(tab0['dist'],bins=10,range=[30,34],histtype='stepfilled',color='k',lw=2, alpha=.3)
 
-pl.xlabel(r'$Distance \ moduli \ (\mu)$',fontsize=14), pl.ylabel('$Number$',fontsize=14)
+pl.xlabel(r'$Distance \ moduli \ (\mu)$ [mag]',fontsize=14), pl.ylabel('$Number$',fontsize=14)
 pl.ylim(0,8),pl.xlim(29.9,34.1)
 pl.legend(loc='upper left'),pl.grid()
 pl.savefig('../../plots/caldist.pdf')
