@@ -8,6 +8,6 @@ for cal in cal:
     #filter = ['B','H']
     for filter in filter:        
         file = filter+'_'+cal+'_update2.csv'
-        os.system("python H0CSP_fixedVpec.py "+file)
+        os.system("python H0CSPcuts.py "+file)
 
 os.system('say "your program has finished."')

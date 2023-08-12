@@ -52,9 +52,9 @@ pl.xticks(fontsize=12),pl.yticks(fontsize=12)
 pl.ylim(0,25),pl.xlim(7.9,12.1)
 
 pl.subplot(2,1,2)
-pl.hist(tab1['m'][w1],bins=20,range=[7,12],histtype='step',label='Cepheid',color='b',lw=2)
-pl.hist(tab2['m'][w2],bins=20,range=[7,12],histtype='step',label='TRGB',color='r',lw=2 )
-pl.hist(tab3['m'][w3],bins=20,range=[7,12],histtype='stepfilled',label='SBF',color='k',lw=2,alpha=.3)
+pl.hist(tab1['m'][w1],bins=50,range=[7,12],histtype='step',label='Cepheid',color='b',lw=2)
+pl.hist(tab2['m'][w2],bins=50,range=[7,12],histtype='step',label='TRGB',color='r',lw=2 )
+pl.hist(tab3['m'][w3],bins=50,range=[7,12],histtype='stepfilled',label='SBF',color='k',lw=2,alpha=.3)
 
 pl.xlabel(r'$Log \ host \ M_{stellar} \ (M_{\odot})$',fontsize=12), pl.ylabel('$Number$',fontsize=12)
 pl.ylim(0,12),pl.xlim(7.9,12.1)

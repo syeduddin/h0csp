@@ -69,7 +69,7 @@ pl.xticks(x,lam)
 trgb = [0,68.834, 69.879, 69.57, 69.598, 68.713, 69.26, 70.776, 72.591, 71.066,0]
 etrgb=[0,1.0775, 0.75550, 1.1995, 0.714, 0.6105, 0.608, 1.0975, 0.8115, 0.7335,0]
 
-ceph = [0,75.576, 73.385, 75.484, 73.442, 72.407, 73.414, 73.434, 75.73, 74.578,0]
+ceph = [0,73.49, 72.31, 73.13, 72.37, 71.40, 72.47, 72.44, 74.82, 73.83,0]
 eceph=[0,1.168, 0.7315, 1.0415, 0.713, 0.667, 0.668, 0.945, 0.827, 0.7955,0]
 
 sbf=[0,69.779, 72.732, 73.496, 72.586, 72.206, 72.701, 70.136, 70.769, 68.748,0]
@@ -80,12 +80,12 @@ pl.errorbar(x-.15,ceph,yerr=eceph,fmt='o',color='b',ms=12,markeredgewidth=2,labe
 pl.errorbar(x,trgb,yerr=etrgb,fmt='d',color='g',ms=14,markeredgewidth=2,label='$TRGB$',lw=2)
 #pl.errorbar(x+.15,sbf,yerr=esbf,fmt='s',color='#377eb8',ms=12,markeredgewidth=2,label='$SBF \ (combined)$',lw=2)
 pl.errorbar(x+.15,sbf,yerr=esbf,fmt='s',color='r',ms=10,markeredgewidth=2,label='$SBF \ (combined)$',lw=2)
-pl.legend(loc='upper right',numpoints=1,fontsize=10)
+pl.legend(loc='upper left',numpoints=1,fontsize=10)
 pl.grid()
-pl.xlim(.5,9.5),pl.ylim(65,80)
+pl.xlim(.5,9.5),pl.ylim(67,78)
 pl.xlabel(r'$Bands$',fontsize=14), pl.ylabel(r'$H_0 \ (km \ s^{-1}\ Mpc^{-1})$',fontsize=14)
 
-pl.savefig('../../plots/h0bands.pdf')
+pl.savefig('../../plots/h0bands_update2.pdf')
 
 
 

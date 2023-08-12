@@ -14,8 +14,8 @@ k = ascii.read('../../data/calibrators/calibrators_sbf_final.csv',format='csv') 
 
 
 
-print (np.mean(j['dist']))
-print (np.mean(k['dist']))
+#print (np.mean(j['dist']))
+#print (np.mean(k['dist']))
 
 range = [np.min(k['dist']),np.max(k['dist'])]
 pl.hist(j['dist'],histtype='stepfilled',bins=10,range=range,label='Jensen+21',color='r',alpha=.5)
@@ -41,13 +41,13 @@ mean2= np.sum(t['dist_2']*wt2)/np.sum(wt2)
 err2 = np.sqrt((1/np.sum(wt2)))
 
 
-print (mean1-mean2)
+#print (mean1-mean2)
 print (np.mean(t['dist_1']-t['dist_2']))
 
 #print (np.mean(t['BV_1']-t['BV_2']))
-print (np.mean(t['edist_1']-t['edist_2']))
+#print (np.mean(t['edist_1']-t['edist_2']))
 
-print(np.sqrt((err1)**2+(err2)**2))
+#print(np.sqrt(t['edist_1'])**2+(t['edist_2'])**2)
 
 sys.exit()
 

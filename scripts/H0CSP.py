@@ -44,7 +44,7 @@ w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='
 
 
 
-f1 =open('../results/'+file[:-4]+'_result_novpec.txt','w') # check file name
+f1 =open('../results/'+file[:-4]+'_result.txt','w') # check file name
 
 # LC and host
 st = tab['st'][w]
@@ -207,7 +207,7 @@ f1.close()
 
 print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
-sys.exit()
+#sys.exit()
 
 
 # Triangle plot

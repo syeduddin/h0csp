@@ -1,7 +1,9 @@
 from astropy.io import ascii
 from astropy.table import join,vstack,Table
+import sys
 
-tab = ascii.read('../../data/working/B_sbf_update2.csv')
+filter = sys.argv[1]
+tab = ascii.read('../../data/working/'+filter+'_ceph_update2.csv')
 import numpy as np
 
 st = tab['st']
@@ -19,7 +21,7 @@ c_ms = tab['covMs']
 c_mbv = tab['covBV_M']
 sn = tab['sn']
 
-w = np.where(dist>1.0)
+w = np.where(dist<1.0)
 
 data = Table()
 data['$Name$']=sn[w]
@@ -34,11 +36,12 @@ data['$eB-V$']=ebv[w].round(5)
 data['$cov_{ms}$'] =c_ms[w].round(5)
 data['$cov_{mbv}$'] =c_mbv[w].round(5)
 data['$M_{host}$']=m_csp[w]
-#data['$Sample$']=tab['sample'][w]
-#data['$Subclass$']=tab['subtype'][w]
-data['$Distant$']= dist[w]
-data['$eDistant$']= edist[w]
+data['$Sample$']=tab['sample'][w]
+data['$Subclass$']=tab['subtype'][w]
+#data['$Distant$']= dist[w]
+#data['$eDistant$']= edist[w]
 
 
 print (data)
-ascii.write(data,'../../results/B_sbfk21cal_update2.txt',format='latex',overwrite=True,)
+ascii.write(data,'../../data/paper_appendix/'+filter+'_update2.txt',format='latex',overwrite=True)
+#ascii.write(data,'/Users/suddin/Downloads/Cepheids.txt',format='tab',overwrite=True,)
