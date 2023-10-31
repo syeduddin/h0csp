@@ -30,8 +30,8 @@ filter = ['u','B','g','V','r','i','Y','J','H']
 
 #filter=['B','H']
 for i in range(len(filter)):
-    
-    result = ascii.read('../../results/'+filter[i]+'_ceph_update2_result.txt')
+
+    result = ascii.read('../../results/'+filter[i]+'_ceph_update3_result.txt')
     #result = ascii.read('../../results/B_trgb_result.txt')
     p0=result['p0'][0]
     ep0 = (result['p0'][1]+result['p0'][2])/2
@@ -42,8 +42,8 @@ for i in range(len(filter)):
     alpha=result['alpha'][0]
     ealpha = (result['alpha'][1]+result['alpha'][2])/2
 
-    beta=result['beta'][0]
-    ebeta = (result['beta'][1]+result['beta'][2])/2
+    rv=result['beta'][0]
+    erv = (result['beta'][1]+result['beta'][2])/2
     sig=result['sig_int'][0]
     vel=result['vel'][0]
     h0=result['H0'][0]
@@ -52,7 +52,7 @@ for i in range(len(filter)):
     #ep2=ep2/10.
     
     
-    tab = ascii.read('../../data/working/'+filter[i]+'_ceph_update2.csv')
+    tab = ascii.read('../../data/working/'+filter[i]+'_ceph_update3.csv')
    
     w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
 
@@ -74,16 +74,19 @@ for i in range(len(filter)):
     edist = tab['edist'][w]
     c_ms = tab['covMs'][w]
     c_mbv = tab['covBV_M'][w]
+    c_sbv = tab['covBVs'][w]
+
     sn = tab['sn'][w]
     sample = tab['sample'][w]
     cal = tab['caltype'][w]
+    host = tab['host'][w]
    
     subtype = tab['subtype'][w] 
     Ho_dist = tab['dist'][w]<0
 
     st1 = p1*(st - 1)
     st2 = p2*((st - 1)**2)
-    red = beta*(bv)
+    red = rv*(bv)
     
     mu_obs = mmax - p0 - st1 - st2 - red - alpha*(m_csp-np.median(m_csp)) 
     absmag = p0 + st1 + st2 + red + alpha*(m_csp-np.median(m_csp)) 
@@ -92,12 +95,11 @@ for i in range(len(filter)):
     mu_model = np.where(Ho_dist,distmod(h0,zhel,zcmb), dist)
     fac= (p1+(2*p2*st))
 
-    err1 = ((fac*est)**2) +(emmax**2) +((beta*ebv)**2)+(2*beta*c_ms)+(2*fac*c_mbv)+(sig**2)+(((2.17*vel)/(zcmb*c))**2)+(alpha*(em/np.log(10)*m_csp))**2 
-
-    err2 = ((fac*est)**2) +(emmax**2) +((beta*ebv)**2)+(2*fac*c_ms)+(beta*c_mbv)+(edist**2)
-
-    #err1 = (emmax**2)+ (ep0**2)+ ((1+(st**2))*(ep1**2)) + ((1+(4*st**2)+(st**4))*(ep2**2))                                                                
-    #err2 = (emmax**2)+ (ep0**2)+ ((1+(st**2))*(ep1**2))+ ((1+(4*st**2)+(st**4))*(ep2**2))  
+    err1 = (emmax**2) + ((fac*est)**2) +((rv*ebv)**2) -(2*fac*c_ms)+(2*rv*fac*c_sbv) -(2*fac*c_mbv)+((alpha*em)**2) + (sig**2) + ((0.00000723*vel/zcmb)**2)
+        
+    err2 = (emmax**2) + ((fac*est)**2) +((rv*ebv)**2) -(2*fac*c_ms)+(2*rv*fac*c_sbv) -(2*fac*c_mbv)+((alpha*em)**2)  + (edist**2)
+            
+    
 
     err = np.where(Ho_dist,err1,err2)
     err = np.sqrt(err)
@@ -117,18 +119,23 @@ for i in range(len(filter)):
     #sys.exit()
     data=Table()
     data['sn']=sn
-    data['res']=dmu
-    data['eres']=err
-    data['zcmb']=zcmb
-    data['st']=st
-    data['B-V']=bv
-    data['m'] =m_csp
-    data['ml'] =ml
-    data['mu'] =mu
-    data['sample']=sample
-    data['cal']=cal
+    #data['res']=dmu
     
-    ascii.write(data,'../../results/Ceph_res_'+filter[i]+'_update2.csv',format='csv', delimiter=',',overwrite=True)
+    data['mu_obs']=mu_obs.round(3)
+    data['err_mu_obs']=err.round(3)
+    
+    data['zcmb']=zcmb.round(4)
+    #data['sBV']=st
+    #data['B-V']=bv
+    data['mass_best'] =m_csp
+    data['mass_low'] =ml
+    data['mass_hhigh'] =mu
+    data['sample']=sample
+    #data['cal']=cal
+   #s data['host']=host
+    #print(data)
+    #ascii.write(data,'../../results/Ceph_res_'+filter[i]+'_update2_vpec.csv',format='csv', delimiter=',',overwrite=True)
+    ascii.write(data,'../../results/forBrent/resids_'+filter[i]+'_update3.txt',format='tab',overwrite=True)
 
     
     pl.subplot(3,3,i+1)
@@ -177,8 +184,8 @@ for i in range(len(filter)):
     #pl.axhline(sig[i],color='g')
     #pl.axhline(-sig[i],color='g')
     #pl.savefig('plots/hd_burns.pdf')
-pl.tight_layout()
-pl.savefig('../../plots/hd_ceph_update2.pdf')
+#pl.tight_layout()
+#pl.savefig('../../plots/hd_ceph_update2_vpec.pdf')
 #pl.show()
 
 

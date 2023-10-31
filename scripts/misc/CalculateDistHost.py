@@ -10,7 +10,8 @@ cosmo1 = cd.set_omega_k_0(cosmo)
 c1 = ascii.read('../../data/hosts/CSP1_SNIa_coord.csv')
 c2 = ascii.read('../../data/hosts/CSP2_SN_host_coord.csv')
 b = ascii.read('../../data/lc/Spreadsheet.csv')
-a = ascii.read('../../data/working/B_ceph.csv')
+a = ascii.read('../../data/working/V_ceph_update2.csv')
+
 
 
 #table = Table()
@@ -56,9 +57,15 @@ impact = np.sqrt((((sra-hra)*3600)*np.cos(sdec*np.pi/180))**2 + ((sdec-hdec)*360
 
 proj=(cd.angular_diameter_distance(np.abs(z),**cosmo))*(impact/206.264806) # projected distance in kpc
 
-print len(proj)
+print (len(proj))
 table = Table()
 table['sn']= tab['sn']
-table['proj'] = proj
+#table['proj'] = proj
+table['snra']=sra
+table['sndec']=sdec
+table['zcmb']=z
+print (table)
 
-table.write('../../data/hosts/proj_dist.csv',format='ascii.csv', delimiter=',',overwrite=True)
+#table.write('../../data/hosts/proj_dist.csv',format='ascii.csv', delimiter=',',overwrite=True)
+
+table.write('../../data/hosts/csp_sncoords.csv',format='ascii.csv', delimiter=',',overwrite=True)

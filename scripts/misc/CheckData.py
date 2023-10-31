@@ -15,6 +15,8 @@ param = sys.argv[1]
 
 w = np.where ((trgb['dist']>0))
 
+
+
 pl.figure(1)
 pl.hist(trgb[param][w1],histtype='step',lw=2,label='CSPI')
 pl.hist(trgb[param][w2],histtype='step',lw=2,label='CSPII')

@@ -42,10 +42,10 @@ c_mbv = tab['covBV_M']
 sn = tab['sn']
 
 #All cuts
-w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') & (tab['dist']<0) & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5))
+w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') & (tab['dist']<0) & (tab['BV']<0.1) & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5))
 
 
-f1 =open('../results/'+file[:-4]+'_resultallcut.txt','w') ### MUST change !!
+f1 =open('../results/'+file[:-4]+'_resultallcuts.txt','w') ### MUST change !!
 print (f1)
 
 #& (tab['BV']<0.1) &(tab['sample']=='CSPII' & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5)

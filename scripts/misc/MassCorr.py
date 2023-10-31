@@ -33,8 +33,8 @@ for j in range(len(filter)):
     
     tab = ascii.read('../../results/Ceph_res_'+filter[j]+'_update2.csv')
    
-    w =np.where((tab['sample']=='CSPI')& (tab['zcmb']>0))
-    #w = np.where(tab['zcmb']>0)
+    #w =np.where((tab['sample']=='CSPI')& (tab['zcmb']>0))
+    w = np.where(tab['zcmb']>0)
     mass = tab['m'][w]
     #print len(tab['sn'])
     
@@ -59,7 +59,7 @@ for j in range(len(filter)):
     
     # Low
     mean_x1_low= np.sum(res[wl]*wt[wl])/np.sum(wt[wl])
-    error_x1_low= np.sqrt((1/np.sum(wt[wl]))
+    error_x1_low= np.sqrt((1/np.sum(wt[wl])))
     
     #high
     

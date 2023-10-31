@@ -21,7 +21,7 @@ range = [np.min(k['dist']),np.max(k['dist'])]
 pl.hist(j['dist'],histtype='stepfilled',bins=10,range=range,label='Jensen+21',color='r',alpha=.5)
 pl.hist(k['dist'],histtype='stepfilled',bins=10,range=range,label='Khetan+21',color='b',alpha=.5)
 pl.legend()
-pl.xlabel('$Distacne \ moduli \ (\mu)$ [mag]',fontsize=14),pl.ylabel('$Number$',fontsize=14)
+pl.xlabel('$Distance \ moduli \ (\mu)$ [mag]',fontsize=14),pl.ylabel('$Number$',fontsize=14)
 pl.grid()
 
 pl.savefig('../../plots/compSBFdist.pdf')

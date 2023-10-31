@@ -24,6 +24,9 @@ q=-0.53
 
 tab = ascii.read('../data/working/'+file)
 
+
+
+
 # Excluding peculiar events
 w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
 
@@ -64,6 +67,7 @@ dist = tab['dist'][w]
 edist = tab['edist'][w]
 c_ms = tab['covMs'][w]
 c_mbv = tab['covBV_M'][w]
+c_sbv = tab['covBVs'][w]
 sn = tab['sn'][w]
 cal = tab['caltype'][w]
 
@@ -109,13 +113,19 @@ def like(par):
 
         mu_model = np.where(Ho_dists, distmod(h0,zhel,zcmb), dist)
 
-        fac= (p1+(2*p2*st))
+        fac= (p1+(2*p2*(st-1.)))
         velterm = (2.17*vel)**2/(c*zcmb)**2
 
             
-        err = (fac*est)**2 +emmax**2 +(rv*ebv)**2+2*fac*c_ms+rv*c_mbv+sig**2+(0.00000723*vel/zcmb)**2 +(alpha*em)**2
-        err1 = ((fac*est)**2) +(emmax**2) +((rv*ebv)**2)+(2*fac*c_ms)+(rv*c_mbv)+(edist**2)+(alpha*em)**2#
-    
+        #err = (fac*est)**2 +emmax**2 +(rv*ebv)**2+2*fac*c_ms+rv*c_mbv+sig**2+(0.00000723*vel/zcmb)**2 +(alpha*em)**2
+            
+        #err1 = ((fac*est)**2) +(emmax**2) +((rv*ebv)**2)+(2*fac*c_ms)+(rv*c_mbv)+(edist**2)+(alpha*em)**2#
+
+        err = (emmax**2) + ((fac*est)**2) +((rv*ebv)**2) -(2*fac*c_ms)+(2*rv*fac*c_sbv) -(2*fac*c_mbv)+((alpha*em)**2) + (sig**2) + ((0.00000723*vel/zcmb)**2)
+        
+        err1 = (emmax**2) + ((fac*est)**2) +((rv*ebv)**2) -(2*fac*c_ms)+(2*rv*fac*c_sbv) -(2*fac*c_mbv)+((alpha*em)**2)  + (edist**2)
+            
+            
         mu_stat = np.where(Ho_dists,err,err1)
 
       
@@ -128,8 +138,8 @@ def like(par):
         return -np.inf
 # EMCEE
 ndim, nwalkers = 8, 80
-ssize=1000
-burnin = 500
+ssize=3000
+burnin = 1000
 
 
 p00 = np.random.rand(nwalkers) * (plim[1] - plim[0]) + plim[0]
