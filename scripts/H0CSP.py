@@ -11,6 +11,12 @@ from astropy.io import ascii
 import corner
 from collections import Counter
 
+
+np.float = float    
+np.int = int   #module 'numpy' has no attribute 'int'
+np.object = object    #module 'numpy' has no attribute 'object'
+np.bool = bool    #module 'numpy' has no attribute 'bool'
+
 #file = input("Please enter a file name from ../data/working/ :\n")
 
 file = sys.argv[1] # file names are in ../data/working/
@@ -138,8 +144,8 @@ def like(par):
         return -np.inf
 # EMCEE
 ndim, nwalkers = 8, 80
-ssize=3000
-burnin = 1000
+ssize=1000
+burnin = 500
 
 
 p00 = np.random.rand(nwalkers) * (plim[1] - plim[0]) + plim[0]
