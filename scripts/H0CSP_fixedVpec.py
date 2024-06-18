@@ -116,7 +116,7 @@ def like(par):
         velterm = (2.17*437.0)**2/(c*zcmb)**2
 
         err = (fac*est[w0])**2 +emmax[w0]**2 +(rv*ebv[w0])**2+2*fac*c_ms[w0]+rv*c_mbv[w0]+sig**2+(0.00000723*vel/zcmb[w0])**2+(alpha*em[w0])**2
-        err1 = ((fac1*est[w1])**2) +(emmax[w1]**2) +((rv*ebv[w1])**2)+(2*fac1*c_ms[w1])+(rv*c_mbv[w1])+(edist[w1]**2)+(alpha*em[w1])**2
+        err1 = ((fac1*est[w1])**2) +(emmax[w1]**2) +((rv*ebv[w1])**2)+(2*fac1*c_ms[w1])+(rv*c_mbv[w1])+sig**2+(edist[w1]**2)+(alpha*em[w1])**2
 
         for err in err:
             mu_stat.append(err)
