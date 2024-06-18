@@ -159,7 +159,7 @@ def like(par):
         err = (fac*est[w0])**2 +emmax[w0]**2 +(rv*ebv[w0])**2+2*fac*c_ms[w0]+rv*c_mbv[w0]+sig**2+(0.00000723*vel/zcmb[w0])**2+(alpha*em[w0])**2
 
           
-        err1 = ((fac1*est1[w1])**2) +(emmax1[w1]**2) +((rv*ebv1[w1])**2)+(2*fac1*c_ms1[w1])+(rv*c_mbv1[w1])+(edist1[w1]**2)+(alpha*em1[w1])**2
+        err1 = ((fac1*est1[w1])**2) +(emmax1[w1]**2) +((rv*ebv1[w1])**2)+(2*fac1*c_ms1[w1])+(rv*c_mbv1[w1])+sig**2+(edist1[w1]**2)+(alpha*em1[w1])**2
 
         for err in err:
             mu_stat.append(err)
