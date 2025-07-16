@@ -1,0 +1,58 @@
+
+Filter   CSP  Calibrators
+  u      16        8
+  B      24       12
+  g      18        8
+  V      24       12
+  r      24       10
+  i      23       10
+  Y      19        7
+  J      19        9
+  H      15        9
+
+
+
+List of Blue Edge Sample :
+
+ B 
+Hubble Flow
+-----------
+SN2005bl
+SN2006bd
+SN2006gt
+SN2006ob
+SN2007al
+SN2007mm
+SN2007ol
+SN2007ux
+SN2008R
+SN2009F
+CSP13aao
+KISS15m
+LSQ11pn
+LSQ12fvl
+LSQ13dkp
+LSQ14act
+LSQ14ajn
+LSQ14ip
+LSQ14jp
+PTF13ebh
+PTF14w
+SN2011jn
+SN2012ij
+SN2013ay
+
+Calibrators
+-----------
+SN2007cv
+SN2008hs
+SN2010Y
+SN2014bv
+SN2016ajf
+SN2006mr
+SN2007on
+SN2008R
+SN2011iv
+PTF13ebh
+CSP15aae
+SN2015bp

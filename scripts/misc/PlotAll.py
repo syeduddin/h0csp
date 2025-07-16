@@ -28,9 +28,9 @@ s2 = np.where((tab1['sample']=='CSPII') & (tab1['dist']==-1.0)& (tab1['m']!=11.5
 
 pl.figure(1)
 
-pl.errorbar(tab1['st'],tab1['BV'],xerr=tab1['est'],yerr=tab1['eBV'],mfc='white',fmt='k.', alpha=.5,ms=15,label='$CSP$')
-pl.errorbar(tab1['st'][w1],tab1['BV'][w1],xerr=tab1['est'][w1],yerr=tab1['eBV'][w1],color='b', fmt='o', ms=12,label='$Cepheid$')
-pl.errorbar(tab2['st'][w2],tab2['BV'][w2],xerr=tab2['est'][w2],yerr=tab2['eBV'][w2],color='r',fmt='*',ms=15,label='$TRGB$')
+#pl.errorbar(tab1['st'],tab1['BV'],xerr=tab1['est'],yerr=tab1['eBV'],mfc='white',fmt='k.', alpha=.5,ms=15,label='$CSP$')
+#pl.errorbar(tab1['st'][w1],tab1['BV'][w1],xerr=tab1['est'][w1],yerr=tab1['eBV'][w1],color='b', fmt='o', ms=12,label='$Cepheid$')
+#pl.errorbar(tab2['st'][w2],tab2['BV'][w2],xerr=tab2['est'][w2],yerr=tab2['eBV'][w2],color='r',fmt='*',ms=15,label='$TRGB$')
 pl.errorbar(tab3['st'][w3],tab3['BV'][w3],xerr=tab3['est'][w3],yerr=tab3['eBV'][w3],color='#377eb8',fmt='d',ms=8,label='$SBF$')
 pl.legend(numpoints=1,loc='upper left')
 pl.grid()

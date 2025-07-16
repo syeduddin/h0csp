@@ -13,7 +13,13 @@ from collections import Counter
 from astropy.table import join,vstack,unique
 import numpy 
 
-#file = input("Please enter a file name from ../data/working/ :\n")
+np.float = float    
+np.int = int   #module 'numpy' has no attribute 'int'
+np.object = object    #module 'numpy' has no attribute 'object'
+np.bool = bool    #module 'numpy' has no attribute 'bool'
+
+
+
 
 file = sys.argv[1] # file names are in ../data/working/
 
@@ -27,6 +33,10 @@ q=-0.53
 tab1 = ascii.read('../data/working/'+file)
 #tab1['VPEC_1'] = 0.0
 #tab1['zCMB_1'] = 0.0
+w = numpy.where(tab1['sn']=='CSP13V')
+print(tab1['dist'][w])
+
+
 
 pec = ascii.read('/Users/suddin/Dropbox/Scripts/github/h0csp/data/hosts/varonly_cspsne_090923.csv')
 
@@ -34,13 +44,20 @@ pec.rename_column('CID_1','sn')
 pec.remove_column('VPEC_VARIANCE')
 pec.remove_column('NONGAUSS')
 
+w = numpy.where(pec['sn']=='CSP13V')
+print(pec['sn'][w])
+
+
 tab2 = join(tab1,pec,keys='sn')
 
-sne = numpy.where(tab2['dist']<0)
+sne = numpy.where(tab2['dist']<0) # Hubble flow SNe Ia
 
 #(tab2['zcmb']>0.01) & (tab2['st']>0.5) & (tab2['BV']<0.5)
 
 f1 =open('../results/'+file[:-4]+'_result_vpec.txt','w') # check file name
+
+
+
 
 
 cc = numpy.where(tab1['caltype']=='c')
@@ -58,8 +75,9 @@ tab = vstack([tab2[sne],tab1[cc],tab1[t],tab1[s],tab1[ct]])
 
 print(len(tab2[sne]),len(tab1[cc]),len(tab1[t]),len(tab1[ct]),len(tab1[s]))
 
-#sys.exit()
-
+w = numpy.where(tab['sn']=='CSP13V')
+print(tab['sn'][w])
+sys.exit()
 
 # Excluding peculiar events
 w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))

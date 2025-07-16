@@ -11,7 +11,7 @@ from scipy import optimize
 from multiprocessing import Pool
 from multiprocessing import cpu_count
 import time
-import linmix
+#import linmix
 from astropy.io import ascii
 from astropy.table import Table
 
@@ -23,15 +23,15 @@ off=[]
 eoff=[]
 pl.figure(figsize=(20,10))
 
-filter = ['u','B','g','V','r','i','Y','J','H']
+#filter = ['u','B','g','V','r','i','Y','J','H']
 
-#filter='B'
+filter='B'
 for j in range(len(filter)):
     
     
     
     
-    tab = ascii.read('../../results/Ceph_res_'+filter[j]+'_update2.csv')
+    tab = ascii.read('../../results/Ceph_res_'+filter[j]+'.csv')
    
     #w =np.where((tab['sample']=='CSPI')& (tab['zcmb']>0))
     w = np.where(tab['zcmb']>0)
@@ -49,8 +49,10 @@ for j in range(len(filter)):
         if i==11.5: mass[n]=random.uniform(7.1,7.9)
             
     
-    wl=np.where(mass<np.median(mass))
-    wh=np.where(mass>np.median(mass))
+    #wl=np.where(mass<np.median(mass))
+    #wh=np.where(mass>np.median(mass))
+    wl=np.where(mass<10)
+    wh=np.where(mass>10)
     
     err_int=(np.std(res)) - (np.mean(eres))
     
@@ -68,7 +70,8 @@ for j in range(len(filter)):
     
     off.append('%6.2f'%(mean_x1_high-mean_x1_low))
     eoff.append('%6.2f'%(np.sqrt((error_x1_low**2)+(error_x1_high**2))))
-    
+    print(off, eoff)
+    sys.exit()
 
     #LINMIX
     lm = linmix.LinMix(mass, res, em, eres, K=2)
@@ -79,7 +82,8 @@ for j in range(len(filter)):
 
 
     #print '& $',filter[j],'$', '&%.3f'%np.mean(lm.chain['beta']),'(%.3f)'%(np.std(lm.chain['beta'])),'&', '%.3f'%(mean_x1_high-mean_x1_low), '(%.3f)'%(np.sqrt((error_x1_low**2)+(error_x1_high**2))),'&','%.2f'%np.median(mass),'\\\\' 
-    #sys.exit()
+    sys.exit()
+    
     xl = np.array([5, 15])    
     
     pl.subplot(3,3,j+1)

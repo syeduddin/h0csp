@@ -13,6 +13,10 @@ from astropy.table import join, vstack, unique
 
 #from astropy.table import vstack
 #filter = raw_input("Please enter a filter name:\n")
+#np.float = float    
+#np.int = int   #module 'numpy' has no attribute 'int'
+#np.object = object    #module 'numpy' has no attribute 'object'
+#np.bool = bool    #module 'numpy' has no attribute 'bool'
 
 file = sys.argv[1]
 
@@ -98,14 +102,14 @@ w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!=
 f1 =open('../results/'+file[:-4]+'_result_SS.txt','w') ### MUST change !!
 print (f1)
 
-w1 =dist1>0
+w1 =np.where((dist>0) & (tab['Br']=='SS'))
 
 print (tab[w0])
 #w1 = random.choice(w,5)
 #print (w1)
 
 print (file, len(st[w0]),len(st1[w1]))
-sys.exit()
+#sys.exit()
 
 
 #initial guess

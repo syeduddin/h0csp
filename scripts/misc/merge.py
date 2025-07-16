@@ -49,5 +49,5 @@ print (len(newt1['dist'][w]))
 #sys.exit()
 
 
-newt1.write('../../data/working/'+filter+'_trgb.csv', format='ascii.csv', delimiter=',',overwrite=True)
+#newt1.write('../../data/working/'+filter+'_trgb.csv', format='ascii.csv', delimiter=',',overwrite=True)
 #newt.write('test.csv', format='ascii.csv', delimiter=' ')

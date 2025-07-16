@@ -9,7 +9,7 @@ t0 = ascii.read('../../data/working/calmorph.txt',format='csv')
 
 t = join(t1,t0,keys='host')
 
-
+print (t1)
 w1 = np.where(t['caltype']=='c')
 Mc = t['Mmax'][w1]-t['dist'][w1] +(t['st'][w1]-1)*1.17 -t['BV'][w1]*3.04
 eMc = np.sqrt((t['eMmax'][w1])**2+(t['edist'][w1])**2)

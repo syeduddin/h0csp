@@ -9,6 +9,13 @@ from collections import Counter
 tab = ascii.read('st_fits_CSPI+II+Ceph+TRGB_gen3.dat')
 tab2 = ascii.read('Spreadsheet.csv')
 
+w = where(tab2['Name']=='SN2011iv')
+
+print(tab2['Name'][w], tab2['dist'][w])
+
+sys.exit()
+
+
 tab2 = tab2['Name','sample','Sub-type','q','Cosmology?','Physics?']
 tab2.rename_column('Name','name')
 tab2.rename_column('Sub-type','subtype')

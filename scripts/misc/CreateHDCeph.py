@@ -1,10 +1,10 @@
 import sys
 import numpy as np
 from numpy import matrix
-import emcee
+#import emcee
 import astropy.io.fits as pyfits
 import matplotlib.pylab as pl
-import triangle
+#simport triangle
 import random,os
 from astropy.cosmology import FlatLambdaCDM
 from scipy import optimize
@@ -15,7 +15,6 @@ from astropy.io import ascii
 from astropy.table import Table
 c = 300000. # km/sec
 q=-0.59 # decelertion parameter
-
 
 # Eqn 9 of Bruns 2018
 def distmod(h,z1,z2):
@@ -31,7 +30,7 @@ filter = ['u','B','g','V','r','i','Y','J','H']
 #filter=['B','H']
 for i in range(len(filter)):
 
-    result = ascii.read('../../results/'+filter[i]+'_ceph_update3_result.txt')
+    result = ascii.read('../../results/'+filter[i]+'_sbfj21_update3_result.txt')
     #result = ascii.read('../../results/B_trgb_result.txt')
     p0=result['p0'][0]
     ep0 = (result['p0'][1]+result['p0'][2])/2
@@ -52,7 +51,7 @@ for i in range(len(filter)):
     #ep2=ep2/10.
     
     
-    tab = ascii.read('../../data/working/'+filter[i]+'_ceph_update3.csv')
+    tab = ascii.read('../../data/working/'+filter[i]+'_sbfj21_update3.csv')
    
     w = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae'))
 
@@ -140,19 +139,16 @@ for i in range(len(filter)):
     
     pl.subplot(3,3,i+1)
    
-    pl.grid()
+    #pl.grid()
     Ho_dists = tab['dist'][w] > 0
    
-    pl.errorbar(zcmb,dmu,yerr=err,fmt='o',mfc='white',color='k',ms=12,label='$'+filter[i]+'$')
+    #pl.errorbar(zcmb,dmu,yerr=err,fmt='o',mfc='white',color='k',ms=12,label='$'+filter[i]+'$')
     wt= np.where((subtype=='Ia-91T'))
     wbg= np.where((subtype=='Ia-91bg'))
-    print (filter[i])
-    print (np.mean(dmu))
-    print (np.mean(dmu[wt]))
     
-    pl.errorbar(zcmb[wbg],dmu[wbg],yerr=err[wbg],fmt='s',color='#f781bf',ms=10,markeredgecolor='k')
-    pl.errorbar(zcmb[wt],dmu[wt],yerr=err[wt],fmt='p',color='b',ms=12,markeredgecolor='k')
-    pl.errorbar(zcmb[Ho_dists],dmu[Ho_dists],yerr=err2[Ho_dists],fmt='d',color='g',ms=12,markeredgecolor='k')
+    #pl.errorbar(zcmb[wbg],dmu[wbg],yerr=err[wbg],fmt='s',color='#f781bf',ms=10,markeredgecolor='k')
+    #pl.errorbar(zcmb[wt],dmu[wt],yerr=err[wt],fmt='p',color='b',ms=12,markeredgecolor='k')
+    #pl.errorbar(zcmb[Ho_dists],dmu[Ho_dists],yerr=err2[Ho_dists],fmt='d',color='g',ms=12,markeredgecolor='k')
 
     rms91t=np.sqrt(np.sum(np.power(dmu[wt],2))/len(dmu[wt]))
     rms91bg=np.sqrt(np.sum(np.power(dmu[wbg],2))/len(dmu[wbg]))
@@ -164,28 +160,30 @@ for i in range(len(filter)):
 
     evel = np.sqrt(evel)
 
-    from operator import itemgetter
-    pick_0 = itemgetter(0)
-    pick_1 = itemgetter(1)
-    x_decor = sorted(enumerate(z), key=pick_1)
-    x_idxs = map(pick_0, x_decor)
-    multi_picker = itemgetter(*x_idxs)
-    multi_picker(evel)
+    #from operator import itemgetter
+    #pick_0 = itemgetter(0)
+    #pick_1 = itemgetter(1)
+    #x_decor = sorted(enumerate(z), key=pick_1)
+    #x_idxs = map(pick_0, x_decor)
+    #multi_picker = itemgetter(*x_idxs)
+    #multi_picker(evel)
 
 
-    pl.plot(multi_picker(z),multi_picker(evel),'r-',lw=3,zorder=3)
+    #pl.plot(multi_picker(z),multi_picker(evel),'r-',lw=3,zorder=3)
 
-    pl.plot(multi_picker(z),multi_picker(-evel),'r-',lw=3,zorder=3)
-    pl.ylim(-1.5,1.5),pl.xlim(0.0,0.15)
-    pl.axhline(0,color='k')
-    pl.legend(numpoints =1,fontsize=16)
-    pl.ylabel(r'$\Delta \mu \ (mag)$' ,fontsize=18)
-    pl.xlabel(r'$z_{cmb}$' ,fontsize=18)
+    #pl.plot(multi_picker(z),multi_picker(-evel),'r-',lw=3,zorder=3)
+    #pl.ylim(-1.5,1.5),pl.xlim(0.0,0.15)
+    #pl.axhline(0,color='k')
+    #pl.legend(numpoints =1,fontsize=16)
+    #pl.ylabel(r'$\Delta \mu \ (mag)$' ,fontsize=18)
+    #pl.xlabel(r'$z_{cmb}$' ,fontsize=18)
     #pl.axhline(sig[i],color='g')
     #pl.axhline(-sig[i],color='g')
     #pl.savefig('plots/hd_burns.pdf')
-#pl.tight_layout()
-#pl.savefig('../../plots/hd_ceph_update2_vpec.pdf')
+    pl.hist(dmu,histtype='step',lw=2,color='k')
+    pl.axvline(0,lw=3)
+pl.tight_layout()
+pl.savefig('../../plots/hist_hr_sbfj21_uddin24.pdf')
 #pl.show()
 
 

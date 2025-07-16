@@ -11,6 +11,10 @@ from astropy.io import ascii
 import corner
 #from astropy.table import vstack
 #filter = raw_input("Please enter a filter name:\n")
+np.float = float    
+np.int = int   #module 'numpy' has no attribute 'int'
+np.object = object    #module 'numpy' has no attribute 'object'
+np.bool = bool    #module 'numpy' has no attribute 'bool'
 
 file = sys.argv[1]
 
@@ -41,17 +45,20 @@ c_ms = tab['covMs']
 c_mbv = tab['covBV_M']
 sn = tab['sn']
 
-#All cuts
-w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') & (tab['dist']<0) & (tab['BV']<0.1) & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5))
+some = np.where(tab['sn'] =='2008hs')
+print(some)
+sys.exit()
+#All cuts for distant SNeIa
+w0 = np.where((tab['sn']!='CSP14abk') &  (tab['sn']!='PTF13dyt') &  (tab['sn']!='PTF13dym') & (tab['sn']!='PTF14yw') & (tab['sn']!='PS1-13eao') & (tab['subtype']!='Ia-SC') & (tab['subtype']!='Ia-02cx') & (tab['sn']!='LSQ14fmg')& (tab['sn']!='SN2004dt')& (tab['sn']!='SN2005gj')& (tab['sn']!='SN2005hk')& (tab['sn']!='SN2006bt')& (tab['sn']!='SN2006ot')& (tab['sn']!='SN2007so')& (tab['sn']!='SN2008ae')& (tab['sn']!='SN2008bd')& (tab['sn']!='SN2008ha')& (tab['sn']!='SN2008J')& (tab['sn']!='SN2009dc')& (tab['sn']!='SN2009J')& (tab['sn']!='SN2010ae') & (tab['dist']<0) & (tab['st']<0.75) & (tab['zcmb']>0.01))
 
 
-f1 =open('../results/'+file[:-4]+'_resultallcuts.txt','w') ### MUST change !!
+f1 =open('../results/'+file[:-4]+'_resultst.75.txt','w') ### MUST change !!
 print (f1)
 
 #& (tab['BV']<0.1) &(tab['sample']=='CSPII' & (tab['zcmb']>0.01) & (tab['st']>0.5) & (tab['BV']<0.5) & (tab['t0']<5)
 
 
-w1 =tab['dist']>0
+w1 = ((tab['dist']>0) & (tab['st']<0.75))
 
 
 
@@ -213,10 +220,10 @@ f1.close()
 print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
 # Triangle plot
-#figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
+figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$","$V_{pec}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],vel_mcmc[0],H0_mcmc[0]],show_titles=True)
 
 
-#figure.savefig("../../plots/mcmcH0_coffset"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+figure.savefig("/Users/suddin/Science/SNeSurveys/CSP/mcmcplots/mcmcH0_st75"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 
 
@@ -232,9 +239,9 @@ print("Serial took {0:.1f} minutes".format(serial_time/60.))
 
 
 
+#H0 = 73.19 +/- 2.67
 
-
-
+#H0 = 76.60 +/- 3.35 
 
 
 

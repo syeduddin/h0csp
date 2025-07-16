@@ -11,6 +11,12 @@ from astropy.io import ascii
 import corner
 
 
+np.float = float    
+np.int = int   #module 'numpy' has no attribute 'int'
+np.object = object    #module 'numpy' has no attribute 'object'
+np.bool = bool    #module 'numpy' has no attribute 'bool'
+
+
 #file = input("Please enter a file name from ../data/working/ :\n")
 
 file = sys.argv[1] # file names are in ../data/working/
@@ -93,7 +99,7 @@ def distmod(h,z1,z2):
 # Liklihood function
 def like(par):
     p,p1,p2,rv,alpha,sig,h0 = par
-    if  -25.0<p<14.0  and -10.0<p1<10.0 and -10.0<p2<10.0 and 0.<rv<10.0 and -1.<alpha<1. and 0.<sig<1. and  0< h0 < 1000.0: # priors
+    if  -25.0<p<14.0  and -10.0<p1<10.0 and -10.0<p2<10.0 and 0.<rv<10.0 and -1.<alpha<1. and 0.<sig<1. and  00.01< h0 < 1000.0: # priors
         
 
         
@@ -105,11 +111,11 @@ def like(par):
 
         fac= (p1+(2*p2*st))
 
-        vel = 187.0
+        #vel = 187.0
         
-        
+        # (0.00000723*vel/zcmb)**2
         #velterm = (2.17*vel)**2/(c*zcmb)**2
-        err = (fac*est)**2 +emmax**2 +(rv*ebv)**2+2*fac*c_ms+rv*c_mbv+sig**2+(0.00000723*vel/zcmb)**2 +(alpha*em)**2
+        err = (fac*est)**2 +emmax**2 +(rv*ebv)**2+2*fac*c_ms+rv*c_mbv+sig**2+ +(alpha*em)**2
 
             
         err1 = ((fac*est)**2) +(emmax**2) +((rv*ebv)**2)+(2*fac*c_ms)+(rv*c_mbv)+sig**2+(edist**2)+(alpha*em)**2#
@@ -206,9 +212,9 @@ f1.close()
 print ("Mean acceptance fraction:", np.mean(sampler.acceptance_fraction))
 
 # Triangle plot
-#figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],H0_mcmc[0]],show_titles=True)
+figure = corner.corner(samples,labels=["$P0$","$P1$", "$P2$", r"$\beta$",r"$\alpha$", r"$\sigma_{int}$", r"$H_0$"],quantiles=[0.16, 0.5, 0.84],truths=[p0_mcmc[0],p1_mcmc[0],p2_mcmc[0],rv_mcmc[0],alpha_mcmc[0],sig_mcmc[0],H0_mcmc[0]],show_titles=True)
 
-#figure.savefig("../plots/mcmcH0_novpec_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
+figure.savefig("../plots/mcmcH0_novpec_"+file[:-4]+"_"+str(nwalkers)+"_"+str(ssize)+".pdf")
 
 
 

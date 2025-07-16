@@ -284,3 +284,24 @@ pl.xlabel(r'$Bands$',fontsize=14), pl.ylabel(r'$H_0 \ (km \ s^{-1}\ Mpc^{-1})$',
 pl.legend(loc='lower center',numpoints=1,fontsize=10)
 pl.grid()
 pl.savefig('../../plots/h0update2.pdf')
+
+
+pl.figure(10)
+pl.xticks(x,lam)
+
+h0 =[0,75.684, 73.523, 76.432, 74.012, 73.348, 74.199, 70.805, 74.517, 75.065,0]
+eh0 = [0,4.385, 2.0385, 2.8979999999999997, 2.0975, 2.0705, 2.202, 2.459, 2.35, 3.875,0]
+
+h0m = [0,76.087, 74.216, 76.96, 74.821, 74.354, 75.466, 72.24, 75.407, 76.352,0]
+eh0m = [0,4.657, 1.9449999999999998, 2.687, 2.1205, 2.035, 2.194, 2.4735, 2.143, 3.71,0]
+
+pl.errorbar(x,h0,yerr=eh0,fmt='o',color='b',ms=14,markeredgewidth=2,label='No host correction',lw=2)
+
+pl.errorbar(x-.15,h0m,yerr=eh0m,fmt='o',color='r',ms=14,markeredgewidth=2,label='Host corrected',lw=2)
+
+pl.xlabel(r'$Bands$',fontsize=10), pl.ylabel(r'$H_0 \ (km \ s^{-1}\ Mpc^{-1})$',fontsize=10)
+pl.legend(loc='lower center',numpoints=1,fontsize=10)
+pl.grid()
+pl.xlim(.5,9.5),pl.ylim(68,80)
+
+pl.savefig('../../plots/h0massefects.pdf')
