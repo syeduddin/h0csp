@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import emcee
 import astropy.io.fits as pyfits
+%matpl
 import matplotlib.pylab as pl
 import random,os
 from multiprocessing import Pool
@@ -28,7 +29,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 c = 300000.
 q=-0.53
 
-tab = ascii.read('../data/working/'+file)
+tab = ascii.read('../data/working/backup/'+file)
 
 
 
@@ -144,8 +145,8 @@ def like(par):
         return -np.inf
 # EMCEE
 ndim, nwalkers = 8, 80
-ssize=1000
-burnin = 500
+ssize=3000
+burnin = 1000
 
 
 p00 = np.random.rand(nwalkers) * (plim[1] - plim[0]) + plim[0]

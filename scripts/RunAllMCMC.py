@@ -1,5 +1,17 @@
 import os
 
+cal = ['ceph']
+
+for cal in cal:
+    filter = ['u','B','g','V','r','i','Y','J','H']
+    #filter = ['B','H']
+    for filter in filter:        
+        file = filter+'_'+cal+'_update3.csv'
+        os.system("python Mark_H0_tripp_alpha.ipynb "+file)
+
+os.system('say "your program has finished."')
+
+sys.exit()
 
 
 import papermill as pm
