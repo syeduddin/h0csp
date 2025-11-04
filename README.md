@@ -1,7 +1,6 @@
--This repository contaiancs codes and data used in Uddin et al. 2023
-(arXiv: 2308.01875)
+-This repository contains codes and data used in Uddin et al. 2024: https://ui.adsabs.harvard.edu/abs/2024ApJ...970...72U/abstract
 
- titled as:  Carnegie Supernova Project-I & -II: Measurements of H0 using Cepheid, TRGB, and SBF Distance Calibration to Type Ia Supernovae
+ Carnegie Supernova Project-I & -II: Measurements of H0 using Cepheid, TRGB, and SBF Distance Calibration to Type Ia Supernovae
 
 -The primary code /scripts/H0CSP.py can be executed to sample parameteres using
 the MCMC sampler EMCEE. The input argument is a file name that
